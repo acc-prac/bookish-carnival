@@ -1,0 +1,62 @@
+cmake_minimum_required(VERSION 3.18)
+
+include(cmake/prelude.cmake)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
+
+project(
+    bookish-carnival
+    VERSION 0.1.0
+    DESCRIPTION "Final project submission. Name was chosen by GitHub"
+    HOMEPAGE_URL "https://example.com/"
+    LANGUAGES CXX CUDA
+)
+find_package(CUDA REQUIRED)
+enable_language(CUDA)
+
+include(cmake/project-is-top-level.cmake)
+include(cmake/variables.cmake)
+
+# ---- Declare executable ----
+
+add_executable(bookish-carnival_exe source/main.cpp)
+add_executable(bookish-carnival::exe ALIAS bookish-carnival_exe)
+
+target_include_directories(
+  bookish-carnival_exe ${warning_guard} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+add_subdirectory(source)
+
+
+set_target_properties(
+    bookish-carnival_exe PROPERTIES
+    OUTPUT_NAME bookish-carnival
+    EXPORT_NAME exe
+)
+
+target_compile_features(bookish-carnival_exe PRIVATE cxx_std_20)
+
+target_link_libraries(bookish-carnival_exe PRIVATE 
+  bookish-carnival_cpulib
+  bookish-carnival_devicelib)
+set_property(TARGET bookish-carnival_exe PROPERTY CUDA_ARCHITECTURES 70-real 72-virtual)
+
+# ---- Install rules ----
+
+if(NOT CMAKE_SKIP_INSTALL_RULES)
+  include(cmake/install-rules.cmake)
+endif()
+
+# ---- Developer mode ----
+
+if(NOT bookish-carnival_DEVELOPER_MODE)
+  return()
+elseif(NOT PROJECT_IS_TOP_LEVEL)
+  message(
+      AUTHOR_WARNING
+      "Developer mode is intended for developers of bookish-carnival"
+  )
+endif()
+
+include(cmake/dev-mode.cmake)

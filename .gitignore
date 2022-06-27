@@ -86,6 +86,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+build
 
 ### CMake Patch ###
 # External projects
@@ -93,3 +94,5 @@ _deps
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,c,cmake
 
+
+.cache
