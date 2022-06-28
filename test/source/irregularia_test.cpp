@@ -1,8 +1,7 @@
-#include "lib.hpp"
+#include "irregularia/cpu/hw.hpp"
+#include "irregularia/device/hw.cuh"
 
-auto main() -> int
-{
-  auto const lib = library {};
-
-  return lib.name == "irregularia" ? 0 : 1;
+auto main() -> int {
+  hello_world_cpu();
+  hello_world_device();
 }
