@@ -40,7 +40,7 @@ target_compile_features(irregularia_exe PRIVATE cxx_std_17)
 target_link_libraries(irregularia_exe PRIVATE 
   irregularia_cpulib
   irregularia_devicelib)
-set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES 70-real 72-virtual)
+set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES ${SUPPORTED_CUDA_ARCHITECTURES})
 
 # ---- Install rules ----
 
