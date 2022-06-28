@@ -14,6 +14,8 @@ project(
 find_package(CUDA REQUIRED)
 enable_language(CUDA)
 
+list(APPEND CUDA_NVCC_FLAGS -stdpar=gpu -gpu=cc61,cuda11.6)
+
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
@@ -42,13 +44,7 @@ target_link_libraries(irregularia_exe PRIVATE
   irregularia_devicelib)
 
 # https://stackoverflow.com/a/72332793... One day...
-CUDA_DETECT_INSTALLED_GPUS(INSTALLED_GPU_CCS_1)
-string(STRIP "${INSTALLED_GPU_CCS_1}" INSTALLED_GPU_CCS_2)
-string(REPLACE " " ";" INSTALLED_GPU_CCS_3 "${INSTALLED_GPU_CCS_2}")
-string(REPLACE "." "" CUDA_ARCH_LIST "${INSTALLED_GPU_CCS_3}")
-
-# https://stackoverflow.com/a/72332793... One day...
-set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+# set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
 
 set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES ${SUPPORTED_CUDA_ARCHITECTURES})
 
