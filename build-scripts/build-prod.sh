@@ -1,2 +1,3 @@
 #!/usr/bin/env sh
-singularity exec -e --nv /mnt/container_store/acc-prac.sif cmake --build build/prod
+singularity exec -e --nv /mnt/container_store/acc-prac.sif \
+    cmake --build build/prod
