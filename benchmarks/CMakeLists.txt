@@ -4,13 +4,11 @@
 
 project(irregulariaBenchmarks LANGUAGES CXX CUDA)
 
-# ---- Tests ----
+find_package(benchmark REQUIRED)
+
+# ---- Benchmarks ----
 
 add_executable(irregularia_benchmark source/irregularia_benchmark.cpp)
-target_link_libraries(irregularia_benchmark PRIVATE irregularia_cpulib irregularia_devicelib)
+target_link_libraries(irregularia_benchmark PRIVATE 
+    irregularia_cpulib irregularia_devicelib benchmark::benchmark)
 target_compile_features(irregularia_benchmark PRIVATE cxx_std_17)
-
-target_include_directories(
-  irregularia_benchmark ${warning_guard} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-)
