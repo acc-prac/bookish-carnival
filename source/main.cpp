@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 
-#include "../include/cpu/hw.hpp"
-#include "../include/device/hw.cuh"
+#include "irregularia/cpu/hw.hpp"
+#include "irregularia/device/hw.cuh"
 
 auto main() -> int
 { 

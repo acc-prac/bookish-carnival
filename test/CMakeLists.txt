@@ -2,15 +2,15 @@
 # depends on being added from it, i.e. the testing is done only from the build
 # tree and is not feasible from an install location
 
-project(bookish-carnivalTests LANGUAGES CXX)
+project(irregulariaTests LANGUAGES CXX CUDA)
 
 # ---- Tests ----
 
-add_executable(bookish-carnival_test source/bookish-carnival_test.cpp)
-target_link_libraries(bookish-carnival_test PRIVATE bookish-carnival_lib)
-target_compile_features(bookish-carnival_test PRIVATE cxx_std_20)
+add_executable(irregularia_test source/irregularia_test.cpp)
+target_link_libraries(irregularia_test PRIVATE irregularia_cpulib irregularia_devicelib)
+target_compile_features(irregularia_test PRIVATE cxx_std_17)
 
-add_test(NAME bookish-carnival_test COMMAND bookish-carnival_test)
+add_test(NAME irregularia_test COMMAND irregularia_test)
 
 # ---- End-of-file commands ----
 

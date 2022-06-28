@@ -2,11 +2,11 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
 # find_package(<package>) call for consumers to find this project
-set(package bookish-carnival)
+set(package irregularia)
 
 install(
-    TARGETS bookish-carnival_exe
-    RUNTIME COMPONENT bookish-carnival_Runtime
+    TARGETS irregularia_exe
+    RUNTIME COMPONENT irregularia_Runtime
 )
 
 write_basic_package_version_file(
@@ -16,27 +16,27 @@ write_basic_package_version_file(
 
 # Allow package maintainers to freely override the path for the configs
 set(
-    bookish-carnival_INSTALL_CMAKEDIR "${CMAKE_INSTALL_DATADIR}/${package}"
+    irregularia_INSTALL_CMAKEDIR "${CMAKE_INSTALL_DATADIR}/${package}"
     CACHE PATH "CMake package config location relative to the install prefix"
 )
-mark_as_advanced(bookish-carnival_INSTALL_CMAKEDIR)
+mark_as_advanced(irregularia_INSTALL_CMAKEDIR)
 
 install(
     FILES "${PROJECT_BINARY_DIR}/${package}ConfigVersion.cmake"
-    DESTINATION "${bookish-carnival_INSTALL_CMAKEDIR}"
-    COMPONENT bookish-carnival_Development
+    DESTINATION "${irregularia_INSTALL_CMAKEDIR}"
+    COMPONENT irregularia_Development
 )
 
 # Export variables for the install script to use
 install(CODE "
-set(bookish-carnival_NAME [[$<TARGET_FILE_NAME:bookish-carnival_exe>]])
-set(bookish-carnival_INSTALL_CMAKEDIR [[${bookish-carnival_INSTALL_CMAKEDIR}]])
+set(irregularia_NAME [[$<TARGET_FILE_NAME:irregularia_exe>]])
+set(irregularia_INSTALL_CMAKEDIR [[${irregularia_INSTALL_CMAKEDIR}]])
 set(CMAKE_INSTALL_BINDIR [[${CMAKE_INSTALL_BINDIR}]])
-" COMPONENT bookish-carnival_Development)
+" COMPONENT irregularia_Development)
 
 install(
     SCRIPT cmake/install-script.cmake
-    COMPONENT bookish-carnival_Development
+    COMPONENT irregularia_Development
 )
 
 if(PROJECT_IS_TOP_LEVEL)

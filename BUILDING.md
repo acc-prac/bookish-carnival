@@ -61,13 +61,13 @@ cmake --install build --config Release
 This project exports a CMake package to be used with the [`find_package`][3]
 command of CMake:
 
-* Package name: `bookish-carnival`
+* Package name: `irregularia`
 * Cache variable: `BOOKISH_CARNIVAL_EXECUTABLE`
 
 Example usage:
 
 ```cmake
-find_package(bookish-carnival REQUIRED)
+find_package(irregularia REQUIRED)
 # Use the executable in some command
 execute_process(
     COMMAND "${BOOKISH_CARNIVAL_EXECUTABLE}" ...

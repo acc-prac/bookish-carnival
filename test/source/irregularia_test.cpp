@@ -4,5 +4,5 @@ auto main() -> int
 {
   auto const lib = library {};
 
-  return lib.name == "bookish-carnival" ? 0 : 1;
+  return lib.name == "irregularia" ? 0 : 1;
 }

@@ -1,6 +1,6 @@
-# bookish-carnival
+# irregularia
 
-This is the bookish-carnival project.
+This is the irregularia project.
 
 # Building and installing
 

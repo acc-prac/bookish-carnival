@@ -1,2 +1,2 @@
-target_sources(bookish-carnival_cpulib PRIVATE 
+target_sources(irregularia_cpulib PRIVATE 
     hw.cpp)

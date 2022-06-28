@@ -5,7 +5,7 @@ include(cmake/prelude.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
 
 project(
-    bookish-carnival
+    irregularia
     VERSION 0.1.0
     DESCRIPTION "Final project submission. Name was chosen by GitHub"
     HOMEPAGE_URL "https://example.com/"
@@ -19,28 +19,28 @@ include(cmake/variables.cmake)
 
 # ---- Declare executable ----
 
-add_executable(bookish-carnival_exe source/main.cpp)
-add_executable(bookish-carnival::exe ALIAS bookish-carnival_exe)
+add_executable(irregularia_exe source/main.cpp)
+add_executable(irregularia::exe ALIAS irregularia_exe)
 
 target_include_directories(
-  bookish-carnival_exe ${warning_guard} PUBLIC
+  irregularia_exe ${warning_guard} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 add_subdirectory(source)
 
 
 set_target_properties(
-    bookish-carnival_exe PROPERTIES
-    OUTPUT_NAME bookish-carnival
+    irregularia_exe PROPERTIES
+    OUTPUT_NAME irregularia
     EXPORT_NAME exe
 )
 
-target_compile_features(bookish-carnival_exe PRIVATE cxx_std_20)
+target_compile_features(irregularia_exe PRIVATE cxx_std_17)
 
-target_link_libraries(bookish-carnival_exe PRIVATE 
-  bookish-carnival_cpulib
-  bookish-carnival_devicelib)
-set_property(TARGET bookish-carnival_exe PROPERTY CUDA_ARCHITECTURES 70-real 72-virtual)
+target_link_libraries(irregularia_exe PRIVATE 
+  irregularia_cpulib
+  irregularia_devicelib)
+set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES 70-real 72-virtual)
 
 # ---- Install rules ----
 
@@ -50,12 +50,12 @@ endif()
 
 # ---- Developer mode ----
 
-if(NOT bookish-carnival_DEVELOPER_MODE)
+if(NOT irregularia_DEVELOPER_MODE)
   return()
 elseif(NOT PROJECT_IS_TOP_LEVEL)
   message(
       AUTHOR_WARNING
-      "Developer mode is intended for developers of bookish-carnival"
+      "Developer mode is intended for developers of irregularia"
   )
 endif()
 

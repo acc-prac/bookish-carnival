@@ -7,10 +7,10 @@ endif()
 
 add_custom_target(
     run-exe
-    COMMAND bookish-carnival_exe
+    COMMAND irregularia_exe
     VERBATIM
 )
-add_dependencies(run-exe bookish-carnival_exe)
+add_dependencies(run-exe irregularia_exe)
 
 option(BUILD_MCSS_DOCS "Build documentation using Doxygen and m.css" OFF)
 if(BUILD_MCSS_DOCS)
