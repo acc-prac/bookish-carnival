@@ -50,8 +50,7 @@
       "cacheVariables": {
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_CXX_STANDARD": "17",
-        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
-        "SUPPORTED_CUDA_ARCHITECTURES": "61-real"
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON"
       }
     },
     {
