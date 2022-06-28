@@ -65,7 +65,7 @@ endif()
 # ---- Developer mode ----
 
 if(NOT irregularia_DEVELOPER_MODE)
-  add_subdirectory(benchmarks)
+  add_subdirectory(benchmark)
   return()
 elseif(NOT PROJECT_IS_TOP_LEVEL)
   message(
