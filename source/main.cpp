@@ -5,7 +5,7 @@
 #include "irregularia/device/hw.cuh"
 
 auto main() -> int
-{ 
-    hello_world_cpu();
-    hello_world_device();
+{
+  hello_world_cpu();
+  hello_world_device();
 }
