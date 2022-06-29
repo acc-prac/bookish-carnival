@@ -2,6 +2,7 @@
 #include <string>
 
 #include "irregularia/cpu/hw.hpp"
+#include "irregularia/cpu/multiple_int.hpp"
 #include "irregularia/device/hw.cuh"
 
 auto main() -> int
