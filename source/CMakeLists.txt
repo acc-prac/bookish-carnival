@@ -11,7 +11,7 @@ target_include_directories(
 
 # ---- Declare library ----
 add_library(irregularia_devicelib)
-target_compile_features(irregularia_devicelib PUBLIC cxx_std_20)
+target_compile_features(irregularia_devicelib PUBLIC cxx_std_17)
 add_subdirectory(device)
 
 target_include_directories(
