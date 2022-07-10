@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <irregularia/multiple_int>
+#include <irregularia/multiple_int.hpp>
 
 TEST(Operations, OverflowingAddition)
 {
