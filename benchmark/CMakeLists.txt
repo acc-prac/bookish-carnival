@@ -11,4 +11,5 @@ find_package(benchmark REQUIRED)
 add_executable(irregularia_benchmark source/irregularia_benchmark.cpp)
 target_link_libraries(irregularia_benchmark PRIVATE 
     irregularia_cpulib irregularia_devicelib benchmark::benchmark)
+target_include_directories(irregularia_benchmark PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
 target_compile_features(irregularia_benchmark PRIVATE cxx_std_20)
