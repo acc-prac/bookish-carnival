@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.17)
 
 include(cmake/prelude.cmake)
 
@@ -46,7 +46,7 @@ set_target_properties(
     EXPORT_NAME exe
 )
 
-target_compile_features(irregularia_exe PRIVATE cxx_std_17)
+target_compile_features(irregularia_exe PRIVATE cxx_std_20)
 
 target_link_libraries(irregularia_exe PRIVATE 
   irregularia_cpulib
