@@ -1,5 +1,6 @@
 #include <cinttypes>
 #include <iostream>
+#include <limits>
 #include <type_traits>
 
 namespace irregularia
@@ -33,6 +34,16 @@ struct _multiple_int_traits
 
   static auto constexpr int_width = BitWidth;
   static auto constexpr carry_width = byte_width * 8 - int_width;
+
+  // Masks lower BitWidth bits of value
+  static int_type constexpr int_mask = int_width == 64
+      ? ~static_cast<int_type>(0)
+      : (static_cast<int_type>(1) << BitWidth) - 1;
+
+  // Masks upper N - BitWidth bits of value
+  static carry_type constexpr carry_mask = carry_width == 64
+      ? ~static_cast<carry_type>(0)
+      : std::numeric_limits<carry_type>::max() ^ int_mask;
 };
 
 };  // namespace detail
@@ -41,21 +52,17 @@ template<std::size_t BitWidth>
 struct multiple_int
 {
   using traits = detail::_multiple_int_traits<BitWidth>;
+  typename traits::int_type value;
 
-  union
+  auto intv() -> typename traits::int_type
   {
-    struct
-    {
-      typename traits::carry_type carry : traits::carry_width;
-      typename traits::int_type active : traits::int_width;
-    } bf;
-    typename traits::int_type value;
-  } bits;
+    return this->value & traits::int_mask;
+  }
 
-  static_assert(sizeof(bits) == sizeof(decltype(bits)::bf),
-                "Bitfield struct is smaller than total union");
-  static_assert(sizeof(bits) == sizeof(decltype(bits)::value),
-                "Backing integer storage is smaller than total union");
+  auto carry() -> typename traits::int_type
+  {
+    return this->value & traits::carry_mask;
+  }
 };
 
 };  // namespace irregularia
