@@ -14,8 +14,6 @@ project(
 find_package(CUDA REQUIRED)
 enable_language(CUDA)
 
-set(CMAKE_CUDA_COMPILER nvc++)
-
 include(FindCUDA/select_compute_arch)
 CUDA_DETECT_INSTALLED_GPUS(INSTALLED_GPU_CCS_1)
 string(STRIP "${INSTALLED_GPU_CCS_1}" INSTALLED_GPU_CCS_2)
