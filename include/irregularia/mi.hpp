@@ -29,13 +29,14 @@ struct multiple_int
       return;
     }
 
-    if (auto c = this->carry(); c != 0) {
-      // zero out carry bits
-      this->value = static_cast<typename traits::int_type>(this->value & traits::carry_mask);
+    auto c = this->carry();
 
-      // toggle one on lowest bit of carry section of value
-      this->value |= (static_cast<typename traits::int_type>(1) << BitWidth);
-    }
+    // zero out carry bits
+    this->value = static_cast<typename traits::int_type>(this->value
+                                                         & traits::carry_mask);
+
+    // toggle one on lowest bit of carry section of value if carry was set at all
+    this->value |= (static_cast<typename traits::int_type>(!!c) << BitWidth);
   }
 };
 
