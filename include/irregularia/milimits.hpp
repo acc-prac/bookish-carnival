@@ -34,7 +34,7 @@ public:
   // TODO: How many more static methods do we need
   static constexpr auto min() noexcept -> irregularia::multiple_int<BitWidth>
   {
-    constexpr auto imin = std::numeric_limits<traits::int_type>::min();
+    constexpr auto imin = std::numeric_limits<typename traits::int_type>::min();
     return irregularia::multiple_int<BitWidth> {imin & traits::int_mask};
   }
 
