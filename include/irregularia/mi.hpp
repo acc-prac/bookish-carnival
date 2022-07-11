@@ -31,10 +31,10 @@ struct multiple_int
 
     if (auto c = this->carry(); c != 0) {
       // zero out carry bits
-      this->value &= ~traits::carry_mask;
+      this->value = static_cast<typename traits::int_type>(this->value & traits::carry_mask);
 
       // toggle one on lowest bit of carry section of value
-      this->value |= (1 << BitWidth);
+      this->value |= (static_cast<typename traits::int_type>(1) << BitWidth);
     }
   }
 };
