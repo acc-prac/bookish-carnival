@@ -59,7 +59,7 @@ public:
     return irregularia::multiple_int<BitWidth> {eps};
   }
 
-  static constexpr auto epsilon() noexcept
+  static constexpr auto round_error() noexcept
       -> irregularia::multiple_int<BitWidth>
   {
     constexpr auto re =
