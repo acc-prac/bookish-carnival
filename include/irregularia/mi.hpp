@@ -24,7 +24,8 @@ struct multiple_int
   auto flatten_carry() -> void
   {
     // TODO: is converting the carry bits into a singular carry bit necessary?
-    if constexpr (irregularia::multiple_int<BitWidth>::traits::carry_width <= 1) {
+    if constexpr (irregularia::multiple_int<BitWidth>::traits::carry_width <= 1)
+    {
       return;
     }
 
@@ -45,8 +46,10 @@ auto operator+(irregularia::multiple_int<BitWidth> lhs,
                irregularia::multiple_int<BitWidth> rhs)
     -> irregularia::multiple_int<BitWidth>
 {
-  auto sum = irregularia::multiple_int<BitWidth>{lhs.value + rhs.value};
-  sum.flatten_carry();
+  auto sum = static_cast<irregularia::multiple_int<BitWidth>::traits::int_type>(
+      lhs.value + rhs.value);
+  auto mi_sum = irregularia::multiple_int<BitWidth> {sum};
+  mi_sum.flatten_carry();
 
-  return sum;
+  return mi_sum;
 }
