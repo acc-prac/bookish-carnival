@@ -33,9 +33,10 @@ struct multiple_int
 
     // zero out carry bits
     this->value = static_cast<typename traits::int_type>(this->value
-                                                         & traits::carry_mask);
+                                                         & ~traits::carry_mask);
 
-    // toggle one on lowest bit of carry section of value if carry was set at all
+    // toggle one on lowest bit of carry section of value 
+    // if carry was set at all
     this->value |= (static_cast<typename traits::int_type>(!!c) << BitWidth);
   }
 };
