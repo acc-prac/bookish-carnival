@@ -2,7 +2,7 @@
 
 #include <thrust/universal_vector.h>
 
-#include "irregularia/device/hw.cuh"
+#include "irregularia/device/hw.cpp"
 
 auto hello_world_device() -> void
 {
