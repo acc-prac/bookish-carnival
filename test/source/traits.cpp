@@ -4,11 +4,17 @@
 using OneIntOneBit =
     irregularia::detail::_multiple_int_traits<1, 1, std::uint8_t>;
 
-using ThreeInts7Bit =
-    irregularia::detail::_multiple_int_traits<3, 7, std::uint32_t>;
+using TwoInts3Bit =
+    irregularia::detail::_multiple_int_traits<2, 3, std::uint8_t>;
 
 TEST(Traits, Masks) 
 {
-    EXPECT_EQ(0b11111110, OneIntOneBit::carry_mask);
-    EXPECT_EQ(0x707070, ThreeInts7Bit::carry_mask);
+    EXPECT_EQ(0b00000001, OneIntOneBit::int_mask);
+    EXPECT_EQ(0b01110111, TwoInts3Bit::int_mask);
+
+    EXPECT_EQ(0b00000010, OneIntOneBit::carry_mask);
+    EXPECT_EQ(0b10001000, TwoInts3Bit::carry_mask);
+
+    EXPECT_EQ(0b11111100, OneIntOneBit::empty_mask);
+    EXPECT_EQ(0b00000000, TwoInts3Bit::empty_mask);
 }

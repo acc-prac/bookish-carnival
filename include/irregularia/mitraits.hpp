@@ -12,7 +12,7 @@ template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _carry_mask
 {
   static constexpr BackingStorage value =
-      (static_cast<BackingStorage>(1) << (IntCount * BitWidth - 1))
+      (static_cast<BackingStorage>(1) << (IntCount * BitWidth))
       | _carry_mask<IntCount - 1, BitWidth, BackingStorage>::value;
 };
 
@@ -25,6 +25,40 @@ struct _carry_mask<0, BitWidth, BackingStorage>
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 constexpr BackingStorage _carry_mask_v =
     _carry_mask<IntCount, BitWidth, BackingStorage>::value;
+
+// Set n bits, n + 1'th bit is for the carry, and above the IntCount * BitWidth
+// bit is only 0s
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+struct _int_mask
+{
+  static constexpr BackingStorage pattern = ((1 << BitWidth) - 1);
+
+  static constexpr BackingStorage value = (pattern << (IntCount * BitWidth - 1))
+      | _int_mask<IntCount - 1, BitWidth, BackingStorage>::value;
+};
+
+template<std::size_t BitWidth, typename BackingStorage>
+struct _int_mask<0, BitWidth, BackingStorage>
+{
+  static constexpr BackingStorage value = 0;
+};
+
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+constexpr BackingStorage _int_mask_v =
+    _int_mask<IntCount, BitWidth, BackingStorage>::value;
+
+// Set upper sizeof(BackingStorage) - (IntCount * BitWidth) bits,
+// remainder is only 0s
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+struct _empty_mask
+{
+  static constexpr BackingStorage value = ~((1 << (IntCount * BitWidth)) - 1);
+};
+
+
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+constexpr BackingStorage _empty_mask_v =
+    _empty_mask<IntCount, BitWidth, BackingStorage>::value;
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _multiple_int_traits
