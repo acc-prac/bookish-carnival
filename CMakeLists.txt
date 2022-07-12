@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.18)
 
 include(cmake/prelude.cmake)
 
@@ -6,22 +6,29 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
 
 project(
     irregularia
-    VERSION 0.1.0
+    VERSION 1.0.0
     DESCRIPTION "Final project submission. Name was chosen by GitHub"
-    HOMEPAGE_URL "https://example.com/"
-    LANGUAGES CXX CUDA
+    LANGUAGES CXX
 )
-find_package(CUDA REQUIRED)
-enable_language(CUDA)
+#find_package(CUDA REQUIRED)
+#enable_language(CUDA)
 
-include(FindCUDA/select_compute_arch)
-CUDA_DETECT_INSTALLED_GPUS(INSTALLED_GPU_CCS_1)
-string(STRIP "${INSTALLED_GPU_CCS_1}" INSTALLED_GPU_CCS_2)
-string(REPLACE " " ";" INSTALLED_GPU_CCS_3 "${INSTALLED_GPU_CCS_2}")
-string(REPLACE "." "" CUDA_ARCH_LIST "${INSTALLED_GPU_CCS_3}")
-SET(CMAKE_CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+#include(FindCUDA/select_compute_arch)
+#CUDA_DETECT_INSTALLED_GPUS(INSTALLED_GPU_CCS_1)
+#string(STRIP "${INSTALLED_GPU_CCS_1}" INSTALLED_GPU_CCS_2)
+#string(REPLACE " " ";" INSTALLED_GPU_CCS_3 "${INSTALLED_GPU_CCS_2}")
+#string(REPLACE "." "" CUDA_ARCH_LIST "${INSTALLED_GPU_CCS_3}")
+#SET(CMAKE_CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
 
-message(STATUS "Compiling for CUDA arch: ${CUDA_ARCH_LIST}")
+#message(STATUS "Compiling for CUDA arch: ${CUDA_ARCH_LIST}")
+
+#set(CMAKE_CXX_COMPILER nvc++)
+set(ACCBENCH_NVCXX_FLAGS -stdpar=gpu -gpu=cc61,cuda11.7)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+
 
 # list(APPEND CUDA_NVCC_FLAGS -stdpar=gpu -gpu=cc61,cuda11.6)
 
@@ -49,12 +56,11 @@ set_target_properties(
 target_compile_features(irregularia_exe PRIVATE cxx_std_20)
 
 target_link_libraries(irregularia_exe PRIVATE 
-  irregularia_cpulib
-  irregularia_devicelib)
+  irregularialib)
 
 # https://stackoverflow.com/a/72332793... One day...
-set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
-set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+#set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+#set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
 
 # ---- Install rules ----
 

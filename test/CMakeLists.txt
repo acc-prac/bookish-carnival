@@ -2,7 +2,7 @@
 # depends on being added from it, i.e. the testing is done only from the build
 # tree and is not feasible from an install location
 
-project(irregulariaTests LANGUAGES CXX CUDA)
+project(irregulariaTests LANGUAGES CXX)
 
 
 include(FetchContent)
@@ -18,13 +18,15 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(irregularia_test source/irregularia_test.cpp)
 add_subdirectory(source)
-target_link_libraries(irregularia_test PRIVATE irregularia_cpulib irregularia_devicelib gtest_main)
+target_link_libraries(irregularia_test PRIVATE irregularialib gtest_main)
 target_compile_features(irregularia_test PRIVATE cxx_std_20)
 
 target_include_directories(
   irregularia_test ${warning_guard} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 )
+target_compile_options(irregularia_test PRIVATE ${ACCBENCH_NVCXX_FLAGS})
+target_link_options(irregularia_test PRIVATE ${ACCBENCH_NVCXX_FLAGS})
 
 include(GoogleTest)
 gtest_discover_tests(irregularia_test)
