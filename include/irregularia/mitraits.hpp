@@ -7,41 +7,48 @@
 namespace detail
 {
 
-template<std::size_t BitWidth>
+// Set every BitWidth'th bit
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+struct _carry_mask
+{
+  static constexpr BackingStorage value =
+      (static_cast<BackingStorage>(1) << (IntCount * BitWidth - 1))
+      | _carry_mask<IntCount - 1, BitWidth, BackingStorage>::value;
+};
+
+template<std::size_t BitWidth, typename BackingStorage>
+struct _carry_mask<0, BitWidth, BackingStorage>
+{
+  static constexpr BackingStorage value = 0;
+};
+
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+constexpr BackingStorage _carry_mask_v =
+    typename _carry_mask<IntCount, BitWidth, BackingStorage>::value;
+
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _multiple_int_traits
 {
   static_assert(BitWidth > 0,
                 "No such thing as integers with 0 bits (at least, not here!)");
 
-  static_assert(
-      BitWidth % 8 != 0,
-      "Use (u)int{8, 16, 32, 64}_t if you want widths with multiples of 8");
-
   // Round up for uneven amount of bits
-  static auto constexpr byte_width =
-      BitWidth / 8 + ((BitWidth % 8 == 0) ? 0 : 1);
+  // Add one for the carry bit
+  static auto constexpr min_byte_width = (BitWidth + 1) * IntCount / 8;
 
-  using int_type = std::conditional_t<
-      BitWidth <= 8,
-      uint8_t,
-      std::conditional_t<
-          BitWidth <= 16,
-          uint16_t,
-          std::conditional_t<BitWidth <= 32, uint32_t, uint64_t>>>;
-  using carry_type = int_type;
+  static_assert(sizeof(BackingStorage) >= min_byte_width,
+                "Invalid BackingStorage; the specified amount of ints and "
+                "their bits do not fit!");
 
-  static auto constexpr int_width = BitWidth;
-  static auto constexpr carry_width = byte_width * 8 - int_width;
+  using int_type = BackingStorage;
 
-  // Masks lower BitWidth bits of value
-  static int_type constexpr int_mask = int_width == 64
-      ? ~static_cast<int_type>(0)
-      : (static_cast<int_type>(1) << BitWidth) - 1;
+  // Mask only the singular padding carry bits
+  static int_type constexpr carry_mask = _carry_mask_v<IntCount, BitWidth, BackingStorage>;
+
+  // Masks pre BitWidth bits of value
+  static int_type constexpr int_mask = ~carry_mask;
 
   // Masks upper N - BitWidth bits of value
-  static carry_type constexpr carry_mask = carry_width == 64
-      ? ~static_cast<carry_type>(0)
-      : std::numeric_limits<carry_type>::max() ^ int_mask;
 };
 
 };  // namespace detail
