@@ -5,6 +5,34 @@
 
 #include "mi.hpp"
 
+namespace irregularia::detail
+{
+
+template<std::size_t IntCount,
+         std::size_t BitWidth,
+         typename BackingStorage,
+         BackingStorage Pattern>
+struct _repeat_bit_pattern
+{
+  static constexpr BackingStorage value = (Pattern << (IntCount * BitWidth - 1))
+      | _repeat_bit_pattern<IntCount - 1, BitWidth, BackingStorage>::value;
+};
+
+template<std::size_t BitWidth, typename BackingStorage, BackingStorage Pattern>
+struct _repeat_bit_pattern<0, BitWidth, BackingStorage, Pattern>
+{
+  static constexpr BackingStorage value = 0;
+};
+
+template<std::size_t IntCount,
+         std::size_t BitWidth,
+         typename BackingStorage,
+         BackingStorage Pattern>
+constexpr auto _repeat_bit_pattern_v =
+    _repeat_bit_pattern<IntCount, BitWidth, BackingStorage, Pattern>::value;
+
+};  // namespace irregularia::detail
+
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct std::numeric_limits<
     irregularia::multiple_int<IntCount, BitWidth, BackingStorage>>
@@ -14,7 +42,6 @@ private:
       irregularia::multiple_int<IntCount, BitWidth, BackingStorage>;
 
   using traits = typename value_type::traits;
-  using limits = std::numeric_limits<typename traits::int_type>;
 
   static_assert(limits::is_specialized, "Cannot find numeric limits");
 
