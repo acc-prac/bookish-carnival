@@ -4,7 +4,7 @@
 #include <limits>
 #include <type_traits>
 
-namespace detail
+namespace irregularia::detail
 {
 
 // Set every BitWidth'th bit
@@ -56,4 +56,4 @@ struct _multiple_int_traits
   // Masks upper N - BitWidth bits of value
 };
 
-};  // namespace detail
+};  // namespace irregularia::detail
