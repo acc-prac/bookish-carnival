@@ -2,7 +2,7 @@
 #include <string>
 
 #include "irregularia/cpu/hw.hpp"
-#include "irregularia/device/hw.cpp"
+#include "irregularia/device/hw.hpp"
 
 auto main() -> int
 {
