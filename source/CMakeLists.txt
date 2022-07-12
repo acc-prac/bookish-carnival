@@ -1,6 +1,6 @@
 # ---- Declare library ----
-add_library(irregularia_lib)
-target_compile_features(irregularia_lib PUBLIC cxx_std_20)
+add_library(irregularia_cpulib)
+target_compile_features(irregularia_cpulib PUBLIC cxx_std_20)
 
 target_include_directories(
   irregularia_lib ${warning_guard} PUBLIC
