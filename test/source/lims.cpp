@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <irregularia/milimits.hpp>
 
+#include <thrust/universal_vector.h>
+
 using limsub1 = std::numeric_limits<irregularia::multiple_int<1>>;
 using limsub2 = std::numeric_limits<irregularia::multiple_int<2>>;
 using limsub3 = std::numeric_limits<irregularia::multiple_int<3>>;
@@ -11,6 +13,11 @@ using limsub7 = std::numeric_limits<irregularia::multiple_int<7>>;
 
 TEST(Limits, Max)
 {
+  auto letters = "Hello World";
+  thrust::universal_vector<char> v {letters,
+                                    letters + std::size("Hello World") - 1};
+  thrust::copy(v.begin(), v.end(), std::ostream_iterator<char>(std::cout, " "));
+
   EXPECT_EQ((static_cast<std::uint8_t>(1) << 1) - 1, limsub1::max().intv());
   EXPECT_EQ(0, limsub1::max().carry());
 
