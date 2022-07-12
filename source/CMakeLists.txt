@@ -1,6 +1,7 @@
 # ---- Declare library ----
 add_library(irregularia_cpulib)
 target_compile_features(irregularia_cpulib PUBLIC cxx_std_20)
+add_subdirectory(cpu)
 
 target_include_directories(
   irregularia_cpulib ${warning_guard} PUBLIC
