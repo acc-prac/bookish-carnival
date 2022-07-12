@@ -8,7 +8,7 @@ namespace irregularia
 {
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
-requires std::is_integer_v<BackingStorage>
+requires std::is_integral_v<BackingStorage>
 struct multiple_int
 {
   using traits =
