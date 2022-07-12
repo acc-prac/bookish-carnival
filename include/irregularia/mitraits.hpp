@@ -85,7 +85,11 @@ struct _multiple_int_traits
   // width of the backing storage, NOTE: this results in the upper otherwise
   // unused bits becomes 1s in this flag. NOTE: However, this is not an issue,
   // as these bits will never be used at all!
-  static int_type constexpr int_mask = ~carry_mask;
+  static int_type constexpr int_mask = 
+    _int_mask_v<IntCount, BitWidth, BackingStorage>;
+
+  static int_type constexpr empty_mask = 
+    _empty_mask_v<IntCount, BitWidth, BackingStorage>;
 
   // Masks upper N - BitWidth bits of value
 };
