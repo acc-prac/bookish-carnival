@@ -24,7 +24,7 @@ struct _carry_mask<0, BitWidth, BackingStorage>
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 constexpr BackingStorage _carry_mask_v =
-    typename _carry_mask<IntCount, BitWidth, BackingStorage>::value;
+    _carry_mask<IntCount, BitWidth, BackingStorage>::value;
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _multiple_int_traits
@@ -47,9 +47,10 @@ struct _multiple_int_traits
       _carry_mask_v<IntCount, BitWidth, BackingStorage>;
 
   // Masks all the bits reserved for the actual values
-  // NOTE: If the integers with their carry bit do not fit perfectly into the width of the backing storage,
-  // NOTE: this results in the upper otherwise unused bits becomes 1s in this flag. 
-  // NOTE: However, this is not an issue, as these bits will never be used at all! 
+  // NOTE: If the integers with their carry bit do not fit perfectly into the
+  // width of the backing storage, NOTE: this results in the upper otherwise
+  // unused bits becomes 1s in this flag. NOTE: However, this is not an issue,
+  // as these bits will never be used at all!
   static int_type constexpr int_mask = ~carry_mask;
 
   // Masks upper N - BitWidth bits of value
