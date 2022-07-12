@@ -6,10 +6,14 @@
 #include "mi.hpp"
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
-struct std::numeric_limits<irregularia::multiple_int<IntCount, BitWidth, BackingStorage>>
+struct std::numeric_limits<
+    irregularia::multiple_int<IntCount, BitWidth, BackingStorage>>
 {
 private:
-  using traits = typename irregularia::multiple_int<IntCount, BitWidth, BackingStorage>::traits;
+  using value_type =
+      irregularia::multiple_int<IntCount, BitWidth, BackingStorage>;
+
+  using traits = typename value_type::traits;
   using limits = std::numeric_limits<typename traits::int_type>;
 
   static_assert(limits::is_specialized, "Cannot find numeric limits");
@@ -32,46 +36,43 @@ public:
   static constexpr std::float_round_style round_style = std::round_toward_zero;
 
   // TODO: How many more static methods do we need
-  static constexpr auto min() noexcept -> irregularia::multiple_int<BitWidth>
+  static constexpr auto min() noexcept -> value_type
   {
     constexpr auto imin = std::numeric_limits<typename traits::int_type>::min();
-    return irregularia::multiple_int<BitWidth> {imin & traits::int_mask};
+    return value_type {imin & traits::int_mask};
   }
 
-  static constexpr auto lowest() noexcept -> irregularia::multiple_int<BitWidth>
+  static constexpr auto lowest() noexcept -> value_type
   {
     static_assert(is_integer,
                   "lowest has not been implemented for floating point types");
     return min();
   }
 
-  static constexpr auto max() noexcept -> irregularia::multiple_int<BitWidth>
+  static constexpr auto max() noexcept -> value_type
   {
     constexpr auto imin = std::numeric_limits<typename traits::int_type>::max();
-    return irregularia::multiple_int<BitWidth> {imin & traits::int_mask};
+    return value_type {imin & traits::int_mask};
   }
 
-  static constexpr auto epsilon() noexcept
-      -> irregularia::multiple_int<BitWidth>
+  static constexpr auto epsilon() noexcept -> value_type
   {
     constexpr auto eps =
         std::numeric_limits<typename traits::int_type>::epsilon();
-    return irregularia::multiple_int<BitWidth> {eps};
+    return value_type {eps};
   }
 
-  static constexpr auto round_error() noexcept
-      -> irregularia::multiple_int<BitWidth>
+  static constexpr auto round_error() noexcept -> value_type
   {
     constexpr auto re =
         std::numeric_limits<typename traits::int_type>::round_error();
-    return irregularia::multiple_int<BitWidth> {re};
+    return value_type {re};
   }
 
-  static constexpr auto infinity() noexcept
-      -> irregularia::multiple_int<BitWidth>
+  static constexpr auto infinity() noexcept -> value_type
   {
     constexpr auto inf =
         std::numeric_limits<typename traits::int_type>::infinity();
-    return irregularia::multiple_int<BitWidth> {inf};
+    return value_type {inf};
   }
 };
