@@ -60,8 +60,8 @@ target_link_libraries(irregularia_exe PRIVATE
   irregularia_devicelib)
 
 # https://stackoverflow.com/a/72332793... One day...
-set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
-set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+#set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
+#set_property(TARGET irregularia_exe PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})
 
 # ---- Install rules ----
 

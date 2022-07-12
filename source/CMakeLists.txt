@@ -3,7 +3,7 @@ add_library(irregularia_cpulib)
 target_compile_features(irregularia_cpulib PUBLIC cxx_std_20)
 
 target_include_directories(
-  irregularia_lib ${warning_guard} PUBLIC
+  irregularia_cpulib ${warning_guard} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 )
 
