@@ -1,14 +1,17 @@
 #pragma once
 
+#include <type_traits>
+
 #include "mitraits.hpp"
 
 namespace irregularia
 {
 
-template<std::size_t BitWidth>
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+requires std::is_integer_v<BackingStorage>
 struct multiple_int
 {
-  using traits = detail::_multiple_int_traits<BitWidth>;
+  using traits = detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
   typename traits::int_type value;
 
   auto intv() const -> typename traits::int_type
@@ -35,7 +38,7 @@ struct multiple_int
     this->value = static_cast<typename traits::int_type>(this->value
                                                          & ~traits::carry_mask);
 
-    // toggle one on lowest bit of carry section of value 
+    // toggle one on lowest bit of carry section of value
     // if carry was set at all
     this->value |= (static_cast<typename traits::int_type>(!!c) << BitWidth);
   }
