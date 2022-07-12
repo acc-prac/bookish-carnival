@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
-#include <irregularia/mi.hpp>
+#include <irregularia/mitraits.hpp>
 
-using OneIntOneBit = irregularia::multiple_int<1, 1, std::uint8_t>;
+using OneIntOneBit =
+    irregularia::detail::_multiple_int_traits<1, 1, std::uint8_t>;
 
-using TwoInts3Bit = irregularia::multiple_int<2, 3, std::uint8_t>;
+using TwoInts3Bit =
+    irregularia::detail::_multiple_int_traits<2, 3, std::uint8_t>;
 
 TEST(Traits, Masks)
 {
