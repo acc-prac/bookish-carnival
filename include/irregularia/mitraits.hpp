@@ -32,9 +32,9 @@ struct _multiple_int_traits
   static_assert(BitWidth > 0,
                 "No such thing as integers with 0 bits (at least, not here!)");
 
-  // Round up for uneven amount of bits
   // Add one for the carry bit
-  static auto constexpr min_byte_width = (BitWidth + 1) * IntCount / 8;
+  static auto constexpr min_byte_width = (BitWidth + 1) * IntCount / 8
+      + ((((BitWidth + 1) * IntCount) % 8 == 0) ? 0 : 1);
 
   static_assert(sizeof(BackingStorage) >= min_byte_width,
                 "Invalid BackingStorage; the specified amount of ints and "
@@ -43,7 +43,8 @@ struct _multiple_int_traits
   using int_type = BackingStorage;
 
   // Mask only the singular padding carry bits
-  static int_type constexpr carry_mask = _carry_mask_v<IntCount, BitWidth, BackingStorage>;
+  static int_type constexpr carry_mask =
+      _carry_mask_v<IntCount, BitWidth, BackingStorage>;
 
   // Masks pre BitWidth bits of value
   static int_type constexpr int_mask = ~carry_mask;
