@@ -22,7 +22,7 @@ project(
 
 #message(STATUS "Compiling for CUDA arch: ${CUDA_ARCH_LIST}")
 
-set(CMAKE_CXX_COMPILER nvc++)
+#set(CMAKE_CXX_COMPILER nvc++)
 set(ACCBENCH_NVCXX_FLAGS -stdpar=gpu -gpu=cc61,cuda11.7)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
