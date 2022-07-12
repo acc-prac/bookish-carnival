@@ -46,7 +46,10 @@ struct _multiple_int_traits
   static int_type constexpr carry_mask =
       _carry_mask_v<IntCount, BitWidth, BackingStorage>;
 
-  // Masks pre BitWidth bits of value
+  // Masks all the bits reserved for the actual values
+  // NOTE: If the integers with their carry bit do not fit perfectly into the width of the backing storage,
+  // NOTE: this results in the upper otherwise unused bits becomes 1s in this flag. 
+  // NOTE: However, this is not an issue, as these bits will never be used at all! 
   static int_type constexpr int_mask = ~carry_mask;
 
   // Masks upper N - BitWidth bits of value
