@@ -21,8 +21,8 @@
 
 add_library(irregularialib INTERFACE)
 target_sources(irregularialib PRIVATE 
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/accbench_targets.hpp>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/mi.hpp>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/milimits.hpp>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/mitraits.hpp>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/irregularia/accbench_targets.hpp>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/irregularia/mi.hpp>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/irregularia/milimits.hpp>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/irregularia/mitraits.hpp>
 )
