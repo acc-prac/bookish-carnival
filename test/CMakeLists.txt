@@ -2,7 +2,7 @@
 # depends on being added from it, i.e. the testing is done only from the build
 # tree and is not feasible from an install location
 
-project(irregulariaTests LANGUAGES CXX CUDA)
+project(irregulariaTests LANGUAGES CXX)
 
 
 include(FetchContent)
