@@ -5,11 +5,11 @@
 
 #include "mi.hpp"
 
-template<std::size_t BitWidth>
-struct std::numeric_limits<irregularia::multiple_int<BitWidth>>
+template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+struct std::numeric_limits<irregularia::multiple_int<IntCount, BitWidth, BackingStorage>>
 {
 private:
-  using traits = typename irregularia::multiple_int<BitWidth>::traits;
+  using traits = typename irregularia::multiple_int<IntCount, BitWidth, BackingStorage>::traits;
   using limits = std::numeric_limits<typename traits::int_type>;
 
   static_assert(limits::is_specialized, "Cannot find numeric limits");
