@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <irregularia/mitraits.hpp>
+#include <irregularia/mi.hpp>
 
 using OneIntOneBit = irregularia::multiple_int<1, 1, std::uint8_t>;
 
