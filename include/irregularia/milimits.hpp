@@ -15,7 +15,7 @@ template<std::size_t IntCount,
 struct _repeat_bit_pattern
 {
   static constexpr BackingStorage value = (Pattern << (IntCount * BitWidth - 1))
-      | _repeat_bit_pattern<IntCount - 1, BitWidth, BackingStorage>::value;
+      | _repeat_bit_pattern<IntCount - 1, BitWidth, BackingStorage, Pattern>::value;
 };
 
 template<std::size_t BitWidth, typename BackingStorage, BackingStorage Pattern>
@@ -42,8 +42,6 @@ private:
       irregularia::multiple_int<IntCount, BitWidth, BackingStorage>;
 
   using traits = typename value_type::traits;
-
-  static_assert(limits::is_specialized, "Cannot find numeric limits");
 
 public:
   // TODO: How many more static attrs do we need
