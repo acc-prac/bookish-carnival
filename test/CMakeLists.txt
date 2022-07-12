@@ -25,6 +25,8 @@ target_include_directories(
   irregularia_test ${warning_guard} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 )
+target_compile_options(irregularia_test PRIVATE ${ACCBENCH_NVCXX_FLAGS})
+target_link_options(irregularia_test PRIVATE ${ACCBENCH_NVCXX_FLAGS})
 
 include(GoogleTest)
 gtest_discover_tests(irregularia_test)
