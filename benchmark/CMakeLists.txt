@@ -11,7 +11,7 @@ find_package(TBB REQUIRED)
 
 add_executable(irregularia_benchmark source/irregularia_benchmark.cpp)
 target_link_libraries(irregularia_benchmark PRIVATE 
-    irregularia_cpulib irregularia_devicelib benchmark::benchmark TBB::tbb)
+    irregularialib benchmark::benchmark TBB::tbb)
 target_include_directories(irregularia_benchmark PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
 target_compile_features(irregularia_benchmark PRIVATE cxx_std_20)
 target_compile_options(irregularia_benchmark PRIVATE ${ACCBENCH_NVCXX_FLAGS})

@@ -18,3 +18,11 @@
 #  irregularia_devicelib ${warning_guard} PUBLIC
 #  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
 #)
+
+add_library(irregularialib INTERFACE)
+target_sources(irregularialib PRIVATE 
+  accbench_targets.hpp
+  mi.hpp
+  milimits.hpp
+  mitraits.hpp
+)

@@ -56,8 +56,7 @@ set_target_properties(
 target_compile_features(irregularia_exe PRIVATE cxx_std_20)
 
 target_link_libraries(irregularia_exe PRIVATE 
-  irregularia_cpulib
-  irregularia_devicelib)
+  irregularialib)
 
 # https://stackoverflow.com/a/72332793... One day...
 #set_property(TARGET irregularia_devicelib PROPERTY CUDA_ARCHITECTURES ${CUDA_ARCH_LIST})

@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(irregularia_test source/irregularia_test.cpp)
 add_subdirectory(source)
-target_link_libraries(irregularia_test PRIVATE irregularia_cpulib irregularia_devicelib gtest_main)
+target_link_libraries(irregularia_test PRIVATE irregularialib gtest_main)
 target_compile_features(irregularia_test PRIVATE cxx_std_20)
 
 target_include_directories(
