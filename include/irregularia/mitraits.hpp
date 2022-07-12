@@ -52,7 +52,7 @@ constexpr BackingStorage _int_mask_v =
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _empty_mask
 {
-  static constexpr BackingStorage value = ~((1 << (IntCount * BitWidth - 1)) - 1);
+  static constexpr BackingStorage value = ~((1 << (IntCount * BitWidth + 1)) - 1);
 };
 
 
