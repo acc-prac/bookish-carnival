@@ -52,9 +52,12 @@ constexpr BackingStorage _int_mask_v =
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _empty_mask
 {
-  static constexpr BackingStorage value = ~((1 << (IntCount * BitWidth + 1)) - 1);
+  static constexpr BackingStorage value =
+      IntCount * BitWidth != sizeof(BackingStorage)
+      ? ~((1 << (IntCount * BitWidth + 1)) - 1)  // bits need to be padded
+      : 0;  // ints and their carry bits take up entire storage space, empty
+            // mask is itself, "empty"
 };
-
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 constexpr BackingStorage _empty_mask_v =
@@ -85,11 +88,11 @@ struct _multiple_int_traits
   // width of the backing storage, NOTE: this results in the upper otherwise
   // unused bits becomes 1s in this flag. NOTE: However, this is not an issue,
   // as these bits will never be used at all!
-  static int_type constexpr int_mask = 
-    _int_mask_v<IntCount, BitWidth, BackingStorage>;
+  static int_type constexpr int_mask =
+      _int_mask_v<IntCount, BitWidth, BackingStorage>;
 
-  static int_type constexpr empty_mask = 
-    _empty_mask_v<IntCount, BitWidth, BackingStorage>;
+  static int_type constexpr empty_mask =
+      _empty_mask_v<IntCount, BitWidth, BackingStorage>;
 
   // Masks upper N - BitWidth bits of value
 };
