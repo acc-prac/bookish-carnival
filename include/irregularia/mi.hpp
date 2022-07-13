@@ -43,16 +43,24 @@ auto operator+(
   using value_type =
       irregularia::multiple_int<IntCount, BitWidth, BackingStorage>;
 
-  // Use intv instead of the raw value to avoid adding carry bits, which would
-  // "bleed" their overflow into the LSB of the following integer
-  auto sum = static_cast<value_type::traits::int_type>(lhs.intv() + rhs.intv());
-  auto mi_sum = value_type {sum};
-
   // 1 for handle, 0 for zero out unconditionally
   // Will cause compilation error if not defined
-  if constexpr (IRREGULARIA_CARRY_BIT_POLICY == 0) {
+  if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 0) {
+    // No need to use intv, as the carry bits are never on, therefore they can
+    // never bleed into the
+    // LSB of the following integer
+    auto sum = static_cast<typename value_type::traits::int_type>(lhs.value
+                                                                  + rhs.value);
+    auto mi_sum = value_type {sum};
     mi_sum.value &= value_type::traits::int_mask;
+
+    return mi_sum;
   } else {
+    // Use intv instead of the raw value to avoid adding carry bits, which would
+    // "bleed" their overflow into the LSB of the following integer
+    auto sum = static_cast<typename value_type::traits::int_type>(lhs.intv()
+                                                                  + rhs.intv());
+    auto mi_sum = value_type {sum};
     // If carry bit was set on neither lhs nor rhs, and no carry bits are set in
     // their sum, no carry bits are set If carry bit was set on neither lhs nor
     // rhs, and carry bits are set in their sum, retain them If carry bit was
@@ -63,7 +71,6 @@ auto operator+(
     // => if carry bits are set anywhere, they must be propagated
     mi_sum.value |=
         (lhs.value | rhs.value | mi_sum.value) & value_type::traits::carry_mask;
+    return mi_sum;
   }
-
-  return mi_sum;
 }
