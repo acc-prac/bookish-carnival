@@ -11,8 +11,11 @@ namespace irregularia::detail
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _carry_mask
 {
-  static constexpr BackingStorage value =
-      (static_cast<BackingStorage>(1) << (IntCount * BitWidth))
+  static constexpr BackingStorage pattern = static_cast<BackingStorage>(1)
+      << BitWidth;
+
+  static constexpr BackingStorage value = pattern
+          << ((IntCount - 1) * (BitWidth + 1))
       | _carry_mask<IntCount - 1, BitWidth, BackingStorage>::value;
 };
 
@@ -31,9 +34,11 @@ constexpr BackingStorage _carry_mask_v =
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _int_mask
 {
-  static constexpr BackingStorage pattern = ((1 << BitWidth) - 1);
+  static constexpr BackingStorage pattern =
+      (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
-  static constexpr BackingStorage value = (pattern << (IntCount * BitWidth - 1))
+  static constexpr BackingStorage value =
+      (pattern << ((IntCount - 1) * (BitWidth + 1)))
       | _int_mask<IntCount - 1, BitWidth, BackingStorage>::value;
 };
 
@@ -52,11 +57,13 @@ constexpr BackingStorage _int_mask_v =
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _empty_mask
 {
-  static constexpr BackingStorage value =
-      IntCount * BitWidth != sizeof(BackingStorage)
-      ? ~((1 << (IntCount * BitWidth + 1)) - 1)  // bits need to be padded
-      : 0;  // ints and their carry bits take up entire storage space, empty
-            // mask is itself, "empty"
+  static constexpr auto value = static_cast<BackingStorage>(
+      IntCount * (BitWidth + 1) != sizeof(BackingStorage)
+          ? ~((static_cast<BackingStorage>(1) << (IntCount * (BitWidth + 1)))
+              - 1)  // bits need to be padded
+          : 0  // ints and their carry bits take up entire storage space, empty
+               // mask is itself, "empty"
+  );
 };
 
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
