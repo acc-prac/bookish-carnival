@@ -50,26 +50,24 @@ TEST(Addition, OverflowingSingleIntSingleBit)
   }
 }
 
-
 TEST(Addition, PartiallyOverflowing4Ints7Bit)
 {
-  // Max container for 32 bits
-  auto l = irregularia::multiple_int<4, 7, std::uint32_t> {0xEFEFFFFF};
+  // Max container for 32 bits, carry bits are off
+  auto l = irregularia::multiple_int<4, 7, std::uint32_t> {0x7F'7F'7F'7F};
 
   // Will overflow on the lower two ints, but keep the upper two
-  auto r = irregularia::multiple_int<4, 7, std::uint32_t> {0x01010101};
+  auto r = irregularia::multiple_int<4, 7, std::uint32_t> {0x00'00'01'01};
 
   auto s = l + r;
 
   if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
-    EXPECT_EQ(0xE0E00000, s.intv());
-    EXPECT_EQ(0x00007070, s.carry());
+    EXPECT_EQ(0x7F'7F'00'00, s.intv());
+    EXPECT_EQ(0x00'00'80'80, s.carry());
   }
 
   else
   {
-    EXPECT_EQ(0xE0E00000, s.intv());
+    EXPECT_EQ(0x7F'7F'00'00, s.intv());
     EXPECT_EQ(0x00000000, s.carry());
   }
-
 }
