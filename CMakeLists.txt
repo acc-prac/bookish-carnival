@@ -10,6 +10,19 @@ project(
     DESCRIPTION "Final project submission. Name was chosen by GitHub"
     LANGUAGES CXX
 )
+
+# Enabled by default
+option(IRREGULARIA_BIT_CARRY_POLICY "Turn on if you want to propogate carry bits in your operations" ON)
+
+if(IRREGULARIA_BIT_CARRY_POLICY)
+    add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=1)
+    message(STATUS "Bits will be carried appropriately")
+else()
+  add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=0)
+  message(STATUS "Carry bits will be appropriately masked")
+endif(IRREGULARIA_BIT_CARRY_POLICY)
+
+
 #find_package(CUDA REQUIRED)
 #enable_language(CUDA)
 
