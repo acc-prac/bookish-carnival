@@ -69,8 +69,7 @@ auto operator+(
     // sum, retain them
 
     // => if carry bits are set anywhere, they must be propagated
-    mi_sum.value |=
-        (lhs.value | rhs.value | mi_sum.value) & value_type::traits::carry_mask;
+    mi_sum.value |= (lhs.value | rhs.value) & value_type::traits::carry_mask;
     return mi_sum;
   }
 }
