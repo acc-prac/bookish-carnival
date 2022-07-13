@@ -12,13 +12,13 @@ project(
 )
 
 # Enabled by default
-option(IRREGULARIA_CARRY_BIT_POLICY "Turn on if you want to propogate carry bits in your operations" ON)
+option(IRREGULARIA_BIT_CARRY_POLICY "Turn on if you want to propogate carry bits in your operations" ON)
 
-if(IRREGULARIA_CARRY_BIT_POLICY)
-    add_definitions(-DIRREGULARIA_CARRY_BIT_POLICY=1)
+if(IRREGULARIA_BIT_CARRY_POLICY)
+    add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=1)
 else()
-  add_definitions(-DIRREGULARIA_CARRY_BIT_POLICY=0)
-endif(IRREGULARIA_CARRY_BIT_POLICY)
+  add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=0)
+endif(IRREGULARIA_BIT_CARRY_POLICY)
 
 
 #find_package(CUDA REQUIRED)
