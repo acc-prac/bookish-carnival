@@ -15,12 +15,6 @@ struct multiple_int
       detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
   typename traits::int_type value;
 
-  // Truncating constructor, assumes value passed is pattern
-  multiple_int(typename traits::int_type value_)
-      : value {value_ & traits::int_mask}
-  {
-  }
-
   auto intv() const -> typename traits::int_type
   {
     return this->value & traits::int_mask;
