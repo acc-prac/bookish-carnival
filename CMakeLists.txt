@@ -16,8 +16,10 @@ option(IRREGULARIA_BIT_CARRY_POLICY "Turn on if you want to propogate carry bits
 
 if(IRREGULARIA_BIT_CARRY_POLICY)
     add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=1)
+    message(STATUS "Bits will be carried appropriately")
 else()
   add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=0)
+  message(STATUS "Carry bits will be appropriately masked")
 endif(IRREGULARIA_BIT_CARRY_POLICY)
 
 
