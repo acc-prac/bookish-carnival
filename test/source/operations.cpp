@@ -68,6 +68,6 @@ TEST(Addition, PartiallyOverflowing4Ints7Bit)
   else
   {
     EXPECT_EQ(0x7F'7F'00'00, s.intv());
-    EXPECT_EQ(0x00000000, s.carry());
+    EXPECT_EQ(0x00'00'00'00, s.carry());
   }
 }
