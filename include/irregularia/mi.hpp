@@ -8,15 +8,13 @@ namespace irregularia
 {
 
 template<std::size_t BitWidth, typename BackingStorage>
-requires std::is_integral_v<BackingStorage> && std::is_unsigned_v<
-    BackingStorage>
+requires std::is_integral_v<BackingStorage> && std::is_unsigned_v<BackingStorage>
 struct multiple_int
 {
 public:
   static constexpr int IntCount = (8 * sizeof(BackingStorage)) / (BitWidth + 1);
 
-  using traits =
-      detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
+  using traits = detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
 
 private:
   multiple_int(typename traits::int_type value)
@@ -47,8 +45,7 @@ public:
     if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 0) {
       // No need to use intv, as the carry bits are never on, therefore they can
       // never bleed into the LSB of the following integer
-      auto sum =
-          static_cast<typename traits::int_type>(this->value_ + rhs.value_);
+      auto sum = static_cast<typename traits::int_type>(this->value_ + rhs.value_);
       auto mi_sum = value_type {sum};
       mi_sum.value_ &= traits::int_mask;
 
@@ -56,8 +53,7 @@ public:
     } else {
       // Use intv instead of the raw value to avoid adding carry bits, which
       // would "bleed" their overflow into the LSB of the following integer
-      auto sum =
-          static_cast<typename traits::int_type>(this->intv() + rhs.intv());
+      auto sum = static_cast<typename traits::int_type>(this->intv() + rhs.intv());
       auto mi_sum = value_type {sum};
       // If carry bit was set on neither lhs nor rhs, and no carry bits are set
       // in their sum,  no carry bits are set

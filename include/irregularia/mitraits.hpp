@@ -11,11 +11,9 @@ namespace irregularia::detail
 template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
 struct _carry_mask
 {
-  static constexpr BackingStorage pattern = static_cast<BackingStorage>(1)
-      << BitWidth;
+  static constexpr BackingStorage pattern = static_cast<BackingStorage>(1) << BitWidth;
 
-  static constexpr BackingStorage value = pattern
-          << ((IntCount - 1) * (BitWidth + 1))
+  static constexpr BackingStorage value = pattern << ((IntCount - 1) * (BitWidth + 1))
       | _carry_mask<IntCount - 1, BitWidth, BackingStorage>::value;
 };
 
@@ -37,8 +35,7 @@ struct _int_mask
   static constexpr BackingStorage pattern =
       (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
-  static constexpr BackingStorage value =
-      (pattern << ((IntCount - 1) * (BitWidth + 1)))
+  static constexpr BackingStorage value = (pattern << ((IntCount - 1) * (BitWidth + 1)))
       | _int_mask<IntCount - 1, BitWidth, BackingStorage>::value;
 };
 
@@ -79,8 +76,8 @@ struct _multiple_int_traits
                 "No such thing as integers with 0 bits (at least, not here!)");
 
   // Add one for the carry bit
-  static auto constexpr min_byte_width = (BitWidth + 1) * IntCount / 8
-      + ((((BitWidth + 1) * IntCount) % 8 == 0) ? 0 : 1);
+  static auto constexpr min_byte_width =
+      (BitWidth + 1) * IntCount / 8 + ((((BitWidth + 1) * IntCount) % 8 == 0) ? 0 : 1);
 
   static_assert(sizeof(BackingStorage) >= min_byte_width,
                 "Invalid BackingStorage; the specified amount of ints and "
@@ -97,8 +94,7 @@ struct _multiple_int_traits
   // width of the backing storage, NOTE: this results in the upper otherwise
   // unused bits becomes 1s in this flag. NOTE: However, this is not an issue,
   // as these bits will never be used at all!
-  static int_type constexpr int_mask =
-      _int_mask_v<IntCount, BitWidth, BackingStorage>;
+  static int_type constexpr int_mask = _int_mask_v<IntCount, BitWidth, BackingStorage>;
 
   static int_type constexpr empty_mask =
       _empty_mask_v<IntCount, BitWidth, BackingStorage>;

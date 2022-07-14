@@ -34,12 +34,10 @@ constexpr auto _repeat_bit_pattern_v =
 };  // namespace irregularia::detail
 
 template<std::size_t BitWidth, typename BackingStorage>
-struct std::numeric_limits<
-    irregularia::multiple_int<BitWidth, BackingStorage>>
+struct std::numeric_limits<irregularia::multiple_int<BitWidth, BackingStorage>>
 {
 private:
-  using value_type =
-      irregularia::multiple_int<BitWidth, BackingStorage>;
+  using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
 
   using traits = typename value_type::traits;
 
@@ -47,8 +45,7 @@ public:
   // TODO: How many more static attrs do we need
   static constexpr bool is_specialized = true;
   static constexpr bool is_signed = std::is_signed_v<typename traits::int_type>;
-  static constexpr bool is_integer =
-      std::is_integral_v<typename traits::int_type>;
+  static constexpr bool is_integer = std::is_integral_v<typename traits::int_type>;
   static constexpr bool is_exact = true;
 
   static constexpr bool has_infinity = false;
@@ -69,8 +66,7 @@ public:
 
   static constexpr auto lowest() noexcept -> value_type
   {
-    static_assert(is_integer,
-                  "lowest has not been implemented for floating point types");
+    static_assert(is_integer, "lowest has not been implemented for floating point types");
     return min();
   }
 
@@ -82,22 +78,19 @@ public:
 
   static constexpr auto epsilon() noexcept -> value_type
   {
-    constexpr auto eps =
-        std::numeric_limits<typename traits::int_type>::epsilon();
+    constexpr auto eps = std::numeric_limits<typename traits::int_type>::epsilon();
     return value_type {eps};
   }
 
   static constexpr auto round_error() noexcept -> value_type
   {
-    constexpr auto re =
-        std::numeric_limits<typename traits::int_type>::round_error();
+    constexpr auto re = std::numeric_limits<typename traits::int_type>::round_error();
     return value_type {re};
   }
 
   static constexpr auto infinity() noexcept -> value_type
   {
-    constexpr auto inf =
-        std::numeric_limits<typename traits::int_type>::infinity();
+    constexpr auto inf = std::numeric_limits<typename traits::int_type>::infinity();
     return value_type {inf};
   }
 };
