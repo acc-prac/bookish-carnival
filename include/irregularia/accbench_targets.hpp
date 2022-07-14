@@ -51,11 +51,10 @@ void elemwise_max(Exec&& exec,
                  [](X const& x, Y const& y) -> Z { return max(x, y); });
 }
 
-template<class Exec, class InputIterator>
-auto sum_red(Exec&& exec, InputIterator vals_b, InputIterator vals_e)
+template<class Exec, class InputIterator, typename T>
+auto sum_red(Exec&& exec, InputIterator vals_b, InputIterator vals_e, T init)
 {
-  using T = std::iterator_traits<InputIterator>::value_type;
-  return std::reduce(std::forward<Exec>(exec), vals_b, vals_e);
+  return std::reduce(std::forward<Exec>(exec), vals_b, vals_e, init);
 }
 
 template<class Exec, class InputIterator>
