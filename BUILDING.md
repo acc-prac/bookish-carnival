@@ -21,13 +21,13 @@ sh singularity/tests.sh
 For configuring a release build of the project and building tests, again, executing inside the 
 given acc-prac container seems to be necessary.
 
-Therefore, to build tests, execute:
+Therefore, to build the benchmarks, execute:
 ```sh
 sh singularity/rbuild.sh
 ```
 
 
-To execute said benchmark in a simple manner, the benchmarks can be queued with
+To execute said benchmarks in a simple manner, queue them with
 ```sh
 sh singularity/small-bench.sh
 ```
