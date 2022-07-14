@@ -19,10 +19,8 @@ public:
       detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
 
 private:
-  // Pattern constructor, simply accepts bits as given bzw. will remove carry
-  // bits if policy demands it
   multiple_int(typename traits::int_type value)
-      : value_ {value & (traits::carry_mask * IRREGULARIA_BIT_CARRY_POLICY)}
+      : value_ {value}
   {
   }
 
