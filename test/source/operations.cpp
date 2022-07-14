@@ -73,3 +73,23 @@ TEST(Addition, PartiallyOverflowing4Ints7Bit)
     EXPECT_EQ(0x00'00'00'00, s.carry());
   }
 }
+
+
+TEST(Max, TwoWay)
+{
+  using std::max;
+
+  auto l = irregularia::multiple_int<7, std::uint32_t>::encode({0x10, 0x10, 0x01, 0x01});
+  auto r = irregularia::multiple_int<7, std::uint32_t>::encode({0xEF, 0xEF, 0xEF, 0xEF});
+
+  auto s = l + r;
+
+  EXPECT_TRUE(l < r);
+  EXPECT_EQ(r, max(l, r));
+
+  EXPECT_TRUE(s < r);
+  EXPECT_TRUE(r, max(s, r))
+
+  EXPECT_TRUE(s < l);
+  EXPECT_TRUE(l, max(r, l));
+}
