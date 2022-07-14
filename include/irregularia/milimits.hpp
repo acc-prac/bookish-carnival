@@ -33,13 +33,13 @@ constexpr auto _repeat_bit_pattern_v =
 
 };  // namespace irregularia::detail
 
-template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+template<std::size_t BitWidth, typename BackingStorage>
 struct std::numeric_limits<
-    irregularia::multiple_int<IntCount, BitWidth, BackingStorage>>
+    irregularia::multiple_int<BitWidth, BackingStorage>>
 {
 private:
   using value_type =
-      irregularia::multiple_int<IntCount, BitWidth, BackingStorage>;
+      irregularia::multiple_int<BitWidth, BackingStorage>;
 
   using traits = typename value_type::traits;
 

@@ -7,31 +7,42 @@
 namespace irregularia
 {
 
-template<std::size_t IntCount, std::size_t BitWidth, typename BackingStorage>
+template<std::size_t BitWidth, typename BackingStorage>
 requires std::is_integral_v<BackingStorage> && std::is_unsigned_v<
     BackingStorage>
 struct multiple_int
 {
+public:
+  static constexpr int IntCount = (8 * sizeof(BackingStorage)) / (bits + 1);
+
   using traits =
       detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
-  typename traits::int_type value;
 
+private:
+  // Pattern constructor, simply accepts bits as given bzw. will remove carry
+  // bits if policy demands it
+  multiple_int(typename traits::int_type value)
+      : value_ {value & (traits::carry_mask * IRREGULARIA_BIT_CARRY_POLICY)}
+  {
+  }
+
+  typename traits::int_type value_;
+
+public:
   auto intv() const -> typename traits::int_type
   {
-    return this->value & traits::int_mask;
+    return this->value_ & traits::int_mask;
   }
 
   auto carry() const -> typename traits::int_type
   {
-    return this->value & traits::carry_mask;
+    return this->value_ & traits::carry_mask;
   }
 
-  auto operator+(
-      irregularia::multiple_int<IntCount, BitWidth, BackingStorage> rhs)
-      -> irregularia::multiple_int<IntCount, BitWidth, BackingStorage>
+  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs)
+      -> irregularia::multiple_int<BitWidth, BackingStorage>
   {
-    using value_type =
-        irregularia::multiple_int<IntCount, BitWidth, BackingStorage>;
+    using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
 
     // 1 for handle, 0 for zero out unconditionally
     // Will cause compilation error if not defined
@@ -39,9 +50,9 @@ struct multiple_int
       // No need to use intv, as the carry bits are never on, therefore they can
       // never bleed into the LSB of the following integer
       auto sum =
-          static_cast<typename traits::int_type>(this->value + rhs.value);
+          static_cast<typename traits::int_type>(this->value_ + rhs.value_);
       auto mi_sum = value_type {sum};
-      mi_sum.value &= traits::int_mask;
+      mi_sum.value_ &= traits::int_mask;
 
       return mi_sum;
     } else {
@@ -63,7 +74,7 @@ struct multiple_int
       // set in their sum, retain them
 
       // => if carry bits are set anywhere, they must be propagated
-      mi_sum.value |= (this->value | rhs.value) & value_type::traits::carry_mask;
+      mi_sum.value_ |= (this->value_ | rhs.value_) & traits::carry_mask;
       return mi_sum;
     }
   }
