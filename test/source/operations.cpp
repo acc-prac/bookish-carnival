@@ -35,7 +35,7 @@ TEST(Addition, NonOverflowingOneIntSevenBit)
 TEST(Addition, OverflowingOneIntSevenBit)
 {
   // Max container for 32 bits, carry bits are off
-  auto l = std::numeric_limits<irregularia::multiple_int<7, std::uint32_t>>::max();
+  auto l = std::numeric_limits<irregularia::multiple_int<7, std::uint8_t>>::max();
   auto r = irregularia::multiple_int<7, std::uint8_t>::encode({1});
 
   auto s = l + r;
