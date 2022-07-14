@@ -27,40 +27,33 @@ private:
   typename traits::int_type value_;
 
 public:
-
-  static auto encode(const std::array<int, IntCount> &input) {
-  
+  static auto encode(const std::array<int, IntCount>& input)
+  {
     static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
     for (auto i = 0; i < (IntCount - 1); ++i) {
-  
       value_ |= (input[i] & mask);
       value_ <<= static_cast<BackingStorage>(BitWidth + 1);
-  
     }
-    
-    value_ |= (input[IntCount - 1] & mask);
-    
-    return multiple_int<BitWidth, BackingStorage> { value_ };
 
+    value_ |= (input[IntCount - 1] & mask);
+
+    return multiple_int<BitWidth, BackingStorage> {value_};
   }
 
-  std::array<int, IntCount> decode() {
-  
+  std::array<int, IntCount> decode()
+  {
     static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
 
     for (auto i = 0; i < IntCount; ++i) {
-  
       data[IntCount - i - 1] = ((value_ >> (i * (BitWidth + 1))) & mask);
-  
     }
 
     return data;
-
   }
 
   auto intv() const -> typename traits::int_type
@@ -73,7 +66,7 @@ public:
     return this->value_ & traits::carry_mask;
   }
 
-  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs)
+  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
       -> irregularia::multiple_int<BitWidth, BackingStorage>
   {
     using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
@@ -110,6 +103,23 @@ public:
       return mi_sum;
     }
   }
+
+  auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
+      -> irregularia::multiple_int<BitWidth, BackingStorage>
+  {
+    return this->intv() < rhs.intv() ? *this : rhs;
+  }
 };
 
 };  // namespace irregularia
+
+template<std::size_t BitWidth, typename BackingStorage>
+struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
+{
+  constexpr auto operator()(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
+                            irregularia::multiple_int<BitWidth, BackingStorage> rhs)
+      -> bool
+  {
+    return lhs < rhs;
+  }
+};
