@@ -13,7 +13,7 @@ requires std::is_integral_v<BackingStorage> && std::is_unsigned_v<
 struct multiple_int
 {
 public:
-  static constexpr int IntCount = (8 * sizeof(BackingStorage)) / (bits + 1);
+  static constexpr int IntCount = (8 * sizeof(BackingStorage)) / (BitWidth + 1);
 
   using traits =
       detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
