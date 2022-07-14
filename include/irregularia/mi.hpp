@@ -16,6 +16,8 @@ public:
 
   using traits = detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
 
+  friend class std::numeric_limits<multiple_int<BitWidth, BackingStorage>>;
+
 private:
   multiple_int(typename traits::int_type value)
       : value_ {value}
@@ -26,18 +28,20 @@ private:
 
 public:
 
-  static auto encode(std::array<int, IntCount> &input) {
+  static auto encode(const std::array<int, IntCount> &input) {
   
     static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
-    for (auto i = 0; i < IntCount; ++i) {
+    for (auto i = 0; i < (IntCount - 1); ++i) {
   
       value_ |= (input[i] & mask);
-      if (i < (IntCount - 1)) { value_ <<= (BitWidth + 1); }
+      value_ <<= static_cast<BackingStorage>(BitWidth + 1);
   
     }
+    
+    value_ |= (input[IntCount - 1] & mask);
     
     return multiple_int<BitWidth, BackingStorage> { value_ };
 
