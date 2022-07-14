@@ -8,10 +8,7 @@
 namespace acc
 {
 
-template<class Exec,
-         class InputIterator1,
-         class InputIterator2,
-         class OutputIterator>
+template<class Exec, class InputIterator1, class InputIterator2, class OutputIterator>
 void xpy(Exec&& exec,
          InputIterator1 x_b,
          InputIterator1 x_e,
@@ -29,10 +26,7 @@ void xpy(Exec&& exec,
                  [](X const& x, Y const& y) -> Z { return x + y; });
 }
 
-template<class Exec,
-         class InputIterator1,
-         class InputIterator2,
-         class OutputIterator>
+template<class Exec, class InputIterator1, class InputIterator2, class OutputIterator>
 void elemwise_max(Exec&& exec,
                   InputIterator1 x_b,
                   InputIterator1 x_e,
