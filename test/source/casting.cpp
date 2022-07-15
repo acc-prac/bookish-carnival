@@ -4,7 +4,7 @@
 TEST(Casting, NoSignAndCarryBits)
 {
   {
-    auto l = irregularia::multiple_int<9, std::uint32_t>::encode({0b000000001, 0b010010011, 0b001111010});
+    auto l = irregularia::multiple_int<9, std::uint32_t>::encode<int, 3>({0b000000001, 0b010010011, 0b001111010});
 
     irregularia::multiple_int<19, std::uint64_t> t = l;          
 
