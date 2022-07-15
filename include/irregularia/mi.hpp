@@ -86,7 +86,7 @@ public:
     return this->value_ & traits::carry_mask;
   }
 
-  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
+  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs)
       -> irregularia::multiple_int<BitWidth, BackingStorage>
   {
     using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
@@ -129,7 +129,7 @@ public:
 
 template<std::size_t BitWidth, typename BackingStorage>
 auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
-               irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
+               irregularia::multiple_int<BitWidth, BackingStorage> rhs)
     -> irregularia::multiple_int<BitWidth, BackingStorage>
 {
   return lhs.intv() < rhs.intv() ? lhs : rhs;
