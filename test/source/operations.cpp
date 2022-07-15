@@ -90,9 +90,9 @@ TEST(Max, TwoWay)
 
   EXPECT_TRUE(l < r) << std::hex << l.intv() << " < " << std::hex << r.intv()
                      << " failed\n";
-  EXPECT_TRUE(s < r) << std::hex << l.intv() << " < " << std::hex << r.intv()
+  EXPECT_TRUE(s < r) << std::hex << s.intv() << " < " << std::hex << r.intv()
                      << " failed\n";
-  EXPECT_TRUE(s < l) << std::hex << l.intv() << " < " << std::hex << r.intv()
+  EXPECT_TRUE(s < l) << std::hex << s.intv() << " < " << std::hex << l.intv()
                      << " failed\n";
 
   auto max_lr = max(l, r);
