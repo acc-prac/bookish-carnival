@@ -34,7 +34,7 @@ public:
     AtMostIntCount > 0 &&
     (sizeof(IndivStorage) * 8) >= BitWidth
   )
-  static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
+  static auto encode(std::array<IndivStorage, AtMostIntCount> input) {
   
     //Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
