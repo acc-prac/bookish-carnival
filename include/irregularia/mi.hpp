@@ -1,8 +1,34 @@
 #pragma once
 
 #include <type_traits>
-
 #include "mitraits.hpp"
+
+template<class>
+struct width2;
+
+template<>
+struct width2<uint8_t>
+{
+    using type=uint16_t;
+};
+
+template<>
+struct width2<uint16_t>
+{
+    using type=uint32_t;
+};
+
+template<>
+struct width2<uint32_t>
+{
+    using type=uint64_t;
+};
+
+template<>
+struct width2<uint64_t>
+{
+    using type=uint64_t;
+};
 
 namespace irregularia
 {
@@ -17,6 +43,9 @@ public:
   using traits = detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
 
   friend class std::numeric_limits<multiple_int<BitWidth, BackingStorage>>;
+  //We cannot access the private member in the conversion constructor because we
+  //are here in a template class. For this reason, we need to use the "friend class" clausel
+  friend class multiple_int<2*BitWidth+1, typename width2<BackingStorage>::type>;
 
 private:
   multiple_int(typename traits::int_type value)
