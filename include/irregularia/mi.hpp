@@ -127,6 +127,7 @@ public:
 
 };  // namespace irregularia
 
+template<std::size_t BitWidth, typename BackingStorage>
 auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
                irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
     -> irregularia::multiple_int<BitWidth, BackingStorage>
