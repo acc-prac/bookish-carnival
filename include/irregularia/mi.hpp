@@ -31,10 +31,9 @@ public:
   template <typename IndivStorage, std::size_t AtMostIntCount>
   requires (
     AtMostIntCount <= IntCount &&
-    AtMostIntCount > 0 &&
-    (sizeof(IndivStorage) * 8) >= BitWidth
+    AtMostIntCount > 0
   )
-  static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
+  static auto encode(const std::array<int, AtMostIntCount> &input) {
   
     //Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
