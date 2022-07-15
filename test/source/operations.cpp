@@ -91,5 +91,5 @@ TEST(Max, TwoWay)
   EXPECT_EQ(r, max(s, r))
 
   EXPECT_TRUE(s < l);
-  EXPECT_EQ(l, max(r, l));
+  EXPECT_EQ(l, max(s, l));
 }
