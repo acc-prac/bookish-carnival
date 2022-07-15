@@ -37,7 +37,7 @@ public:
   static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
   
     //Create a mask with #bit-width bits set to one
-    static unsigned int mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
+    static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
@@ -64,7 +64,7 @@ public:
   std::array<int, IntCount> decode() {
 
     //Create a mask with #bit-width bits set to one
-    static unsigned int mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
+    static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
     
