@@ -41,7 +41,7 @@ public:
 
     BackingStorage value_ = 0;
 
-    for (auto i = 0; i < (IntCount - 1); ++i) {
+    for (std::size_t i = 0; i < (IntCount - 1); ++i) {
   
       //Insert value
       value_ |= (input[i] & mask);
@@ -64,7 +64,7 @@ public:
 
     std::array<int, IntCount> data;
 
-    for (auto i = 0; i < IntCount; ++i) {
+    for (std::size_t i = 0; i < IntCount; ++i) {
   
       //During encoding numbers are inserted in reverse order,
       //decode them in reverse order to correct that
