@@ -76,7 +76,7 @@ public:
   
         //During encoding numbers are inserted in reverse order,
         //decode them in reverse order to correct that
-        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(UINT_MAX & mask) | val); }
+        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(std::numeric_limits<unsigned int>::max() & mask) | val); }
         else { data[IntCount - i - 1] = val; }
   
       }
