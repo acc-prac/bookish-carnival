@@ -80,7 +80,7 @@ TEST(Max, TwoWay)
   using std::max;
 
   auto l = irregularia::multiple_int<7, std::uint32_t>::encode<int, 4>(
-      {0x10, 0x10, 0x01, 0x01});
+      {0xE0, 0xE0, 0x0E, 0x0E});
   auto r = irregularia::multiple_int<7, std::uint32_t>::encode<int, 4>(
       {0xEF, 0xEF, 0xEF, 0xEF});
 
