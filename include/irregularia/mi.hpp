@@ -138,7 +138,7 @@ template<std::size_t BitWidth, typename BackingStorage>
 struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
 {
   constexpr auto operator()(irregularia::multiple_int<BitWidth, BackingStorage> const& lhs,
-                            irregularia::multiple_int<BitWidth, BackingStorage> const& rhs)
+                            irregularia::multiple_int<BitWidth, BackingStorage> const& rhs) const
       -> bool
   {
     return lhs < rhs;
