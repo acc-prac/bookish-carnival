@@ -43,7 +43,7 @@ TEST(Addition, OverflowingOneIntSevenBit)
 
   if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
     EXPECT_EQ(0, s.intv());
-    EXPECT_EQ(1 << 1, s.carry());
+    EXPECT_EQ(0x80, s.carry());
   }
 
   else
