@@ -16,6 +16,8 @@ public:
 
   using traits = detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
 
+  friend class std::numeric_limits<multiple_int<BitWidth, BackingStorage>>;
+
 private:
   multiple_int(typename traits::int_type value)
       : value_ {value}
@@ -25,6 +27,66 @@ private:
   typename traits::int_type value_;
 
 public:
+ 
+  template <typename IndivStorage, std::size_t AtMostIntCount>
+  requires (
+    AtMostIntCount <= IntCount &&
+    AtMostIntCount > 0 &&
+    (sizeof(IndivStorage) * 8) >= BitWidth
+  )
+  static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
+  
+    //Create a mask with #bit-width bits set to one
+    static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
+
+    BackingStorage value_ = 0;
+
+    if constexpr (IntCount > 1) {
+
+      for (std::size_t i = 0; i < (IntCount - 1); ++i) {
+  
+        //Insert value
+        value_ |= (input[i] & mask);
+        //Shift by bit width + 1 (carry bit)
+        value_ <<= (BitWidth + 1);
+  
+      }
+      
+    }
+    
+    //Don't shift the last value
+    value_ |= (input[IntCount - 1] & mask);
+    
+    return multiple_int<BitWidth, BackingStorage> { value_ };
+
+  }
+
+  std::array<int, IntCount> decode() {
+
+    //Create a mask with #bit-width bits set to one
+    static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
+
+    std::array<int, IntCount> data;
+    
+    if constexpr (IntCount > 1) {
+
+      for (std::size_t i = 0; i < IntCount; ++i) {
+  
+        auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
+  
+        //During encoding numbers are inserted in reverse order,
+        //decode them in reverse order to correct that
+        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
+        else { data[IntCount - i - 1] = val; }
+  
+      }
+      
+    }
+
+    return data;
+
+  }
+
   auto intv() const -> typename traits::int_type
   {
     return this->value_ & traits::int_mask;
