@@ -1,5 +1,6 @@
 #pragma once
 
+#include <compare>
 #include <type_traits>
 
 #include "mitraits.hpp"
@@ -123,16 +124,13 @@ public:
       return mi_sum;
     }
   }
+
+  auto operator<=>(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> std::strong_ordering {
+    return this->intv() <=> rhs.intv();
+  }
 };
 
 };  // namespace irregularia
-
-template<std::size_t BitWidth, typename BackingStorage>
-auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> const& lhs,
-               irregularia::multiple_int<BitWidth, BackingStorage> const& rhs) -> bool
-{
-  return lhs.intv() < rhs.intv();
-}
 
 template<std::size_t BitWidth, typename BackingStorage>
 struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
