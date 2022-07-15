@@ -85,11 +85,11 @@ TEST(Max, TwoWay)
   auto s = l + r;
 
   EXPECT_TRUE(l < r);
-  EXPECT_EQ(r, max(l, r));
-
   EXPECT_TRUE(s < r);
-  EXPECT_EQ(r, max(s, r));
-
   EXPECT_TRUE(s < l);
-  EXPECT_EQ(l, max(s, l));
+
+  // Using intv here because operator== is not implemented for 
+  EXPECT_EQ(r.intv(), max(l, r).intv());
+  EXPECT_EQ(r.intv(), max(s, r).intv());
+  EXPECT_EQ(l.intv(), max(s, l).intv());
 }
