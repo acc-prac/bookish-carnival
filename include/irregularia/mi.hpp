@@ -37,7 +37,7 @@ public:
   static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
   
     //Create a mask with #bit-width bits set to one
-    static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
+    static unsigned int mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
@@ -64,7 +64,7 @@ public:
   std::array<int, IntCount> decode() {
 
     //Create a mask with #bit-width bits set to one
-    static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
+    static unsigned int mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
     
@@ -76,7 +76,7 @@ public:
   
         //During encoding numbers are inserted in reverse order,
         //decode them in reverse order to correct that
-        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(std::numeric_limits<unsigned int>::max() & mask) | val); }
+        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
         else { data[IntCount - i - 1] = val; }
   
       }
