@@ -29,10 +29,8 @@ static void elemwise_max_bench(benchmark::State& state)
   Container<T> const x(n_elements, T {1});
   Container<T> y(n_elements, T {2});
 
-  auto const init = T{};
-
   for (auto _ : state) {
-    acc::elemwise_max(exec, x.cbegin(), x.cend(), y.cbegin(), y.begin(), T{});
+    acc::elemwise_max(exec, x.cbegin(), x.cend(), y.cbegin(), y.begin());
   }
 }
 BENCHMARK(elemwise_max_bench<acc_par, std::vector, int>)
