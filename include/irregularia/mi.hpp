@@ -58,10 +58,6 @@ public:
     value_ |= (input[IntCount - 1] & mask);
     
     return multiple_int<BitWidth, BackingStorage> { value_ };
-
-    value_ |= (input[IntCount - 1] & mask);
-
-    return multiple_int<BitWidth, BackingStorage> {value_};
   }
 
   std::array<int, IntCount> decode() {
