@@ -27,20 +27,30 @@ private:
   typename traits::int_type value_;
 
 public:
-
-  static auto encode(const std::array<int, IntCount> &input) {
+ 
+  template <typename IndivStorage, std::size_t AtMostIntCount>
+  requires (
+    AtMostIntCount <= IntCount &&
+    AtMostIntCount > 0 &&
+    (sizeof(IndivStorage) * 8) >= BitWidth
+  )
+  static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
   
+    //Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
     for (auto i = 0; i < (IntCount - 1); ++i) {
   
+      //Insert value
       value_ |= (input[i] & mask);
-      value_ <<= static_cast<BackingStorage>(BitWidth + 1);
+      //Shift by bit width + 1 (carry bit)
+      value_ <<= (BitWidth + 1);
   
     }
     
+    //Don't shift the last value
     value_ |= (input[IntCount - 1] & mask);
     
     return multiple_int<BitWidth, BackingStorage> { value_ };
@@ -48,14 +58,18 @@ public:
   }
 
   std::array<int, IntCount> decode() {
-  
+
+    //Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
 
     for (auto i = 0; i < IntCount; ++i) {
   
-      data[IntCount - i - 1] = ((value_ >> (i * (BitWidth + 1))) & mask);
+      //During encoding numbers are inserted in reverse order,
+      //decode them in reverse order to correct that
+      if ((((value_ >> (i * (BitWidth + 1))) & mask) >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(UINT_MAX & mask) | ((value_ >> (i * (BitWidth + 1))) & mask)); }
+      else { data[IntCount - i - 1] = ((value_ >> (i * (BitWidth + 1))) & mask); }
   
     }
 
