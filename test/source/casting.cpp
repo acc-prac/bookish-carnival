@@ -8,7 +8,7 @@ TEST(Casting, NoSignAndCarryBits)
 
     irregularia::multiple_int<19, std::uint64_t> t = l;          
 
-    EXPECT_EQ(0b0000'00000000000'110010011'00000000000'000000001'00000000000'001111010, l.intv());
-    EXPECT_EQ(0, l.carry());
+    EXPECT_EQ(0b0000'00000000000'010010011'00000000000'000000001'00000000000'001111010, t.intv());
+    EXPECT_EQ(0, t.carry());
   }
 }
