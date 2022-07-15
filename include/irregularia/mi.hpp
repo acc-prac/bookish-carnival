@@ -30,10 +30,11 @@ private:
   typename traits::int_type value_;
 
 public:
-  template<typename IndivStorage, std::size_t AtMostIntCount>
-  requires(AtMostIntCount <= IntCount
-           && AtMostIntCount
-               > 0) static auto encode(const std::array<int, AtMostIntCount>& input)
+  /* clang-format off */
+  template<std::size_t AtMostIntCount> 
+  requires(AtMostIntCount <= IntCount && AtMostIntCount > 0)
+  static auto encode(const std::array<int, AtMostIntCount>& input)
+  /* clang-format on */
   {
     // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
@@ -137,8 +138,7 @@ public:
     }
   }
 
-  auto operator==(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
-      -> bool
+  auto operator==(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
   {
     if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
       return this->intv() == rhs.intv();
@@ -147,8 +147,7 @@ public:
     }
   }
 
-  auto operator!=(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
-      -> bool
+  auto operator!=(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
   {
     if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
       return this->intv() != rhs.intv();
