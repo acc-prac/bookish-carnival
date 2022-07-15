@@ -1,6 +1,7 @@
-#include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 #include <irregularia/milimits.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(Addition, NonOverflowingOneIntSevenBit)
 {
@@ -90,7 +91,10 @@ TEST(Max, TwoWay)
   EXPECT_TRUE(s < r);
   EXPECT_TRUE(s < l);
 
-  EXPECT_EQ(r, max(l, r));
-  EXPECT_EQ(r, max(s, r));
-  EXPECT_EQ(l, max(s, l));
+  auto max_lr = max(l, r);
+  auto max_sr = max(s, r);
+  auto max_sl = max(s, l);
+  EXPECT_EQ(r, max_lr);
+  EXPECT_EQ(r, max_sr);
+  EXPECT_EQ(l, max_sl);
 }
