@@ -24,9 +24,9 @@ private:
   {
   }
 
+public:
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
-  requires 2*SmallerBitWidth + 1 == BitWidth &&
-           2*sizeof(SmallerBackingStorage) == sizeof(BackingStorage) 
+  requires(2*SmallerBitWidth + 1 == BitWidth && 2*sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
   multiple_int(multiple_int<SmallerBitWidth, SmallerBackingStorage> halfSizeMultipleInt)
       : value_ {0}
   {
@@ -82,6 +82,8 @@ private:
       }
     }
   }
+
+private:
 
   typename traits::int_type value_;
 
