@@ -88,7 +88,7 @@ TEST(Max, TwoWay)
   EXPECT_EQ(r, max(l, r));
 
   EXPECT_TRUE(s < r);
-  EXPECT_EQ(r, max(s, r))
+  EXPECT_EQ(r, max(s, r));
 
   EXPECT_TRUE(s < l);
   EXPECT_EQ(l, max(s, l));
