@@ -128,8 +128,8 @@ public:
 };  // namespace irregularia
 
 template<std::size_t BitWidth, typename BackingStorage>
-auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
-               irregularia::multiple_int<BitWidth, BackingStorage> rhs) -> bool
+auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> const& lhs,
+               irregularia::multiple_int<BitWidth, BackingStorage> const& rhs) -> bool
 {
   return lhs.intv() < rhs.intv();
 }
@@ -137,8 +137,8 @@ auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
 template<std::size_t BitWidth, typename BackingStorage>
 struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
 {
-  constexpr auto operator()(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
-                            irregularia::multiple_int<BitWidth, BackingStorage> rhs)
+  constexpr auto operator()(irregularia::multiple_int<BitWidth, BackingStorage> const& lhs,
+                            irregularia::multiple_int<BitWidth, BackingStorage> const& rhs)
       -> bool
   {
     return lhs < rhs;
