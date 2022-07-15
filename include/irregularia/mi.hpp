@@ -129,10 +129,9 @@ public:
 
 template<std::size_t BitWidth, typename BackingStorage>
 auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
-               irregularia::multiple_int<BitWidth, BackingStorage> rhs)
-    -> irregularia::multiple_int<BitWidth, BackingStorage>
+               irregularia::multiple_int<BitWidth, BackingStorage> rhs) -> bool
 {
-  return lhs.intv() < rhs.intv() ? lhs : rhs;
+  return lhs.intv() < rhs.intv();
 }
 
 template<std::size_t BitWidth, typename BackingStorage>
