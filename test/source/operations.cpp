@@ -89,9 +89,9 @@ TEST(Max, TwoWay)
 
   // Operators derived from spaceship
 
-  EXPECT_TRUE(l < r) << std::bitset<32>(l) " < "  << std::bitset<32>(r) << " failed";
-  EXPECT_TRUE(s < r) << std::bitset<32>(l) " < "  << std::bitset<32>(r) << " failed";
-  EXPECT_TRUE(s < l) << std::bitset<32>(l) " < "  << std::bitset<32>(r) << " failed";
+  EXPECT_TRUE(l < r) << std::bitset<32>(l.intv()) " < "  << std::bitset<32>(r.intv()) << " failed";
+  EXPECT_TRUE(s < r) << std::bitset<32>(l.intv()) " < "  << std::bitset<32>(r.intv()) << " failed";
+  EXPECT_TRUE(s < l) << std::bitset<32>(l.intv()) " < "  << std::bitset<32>(r.intv()) << " failed";
 
   auto max_lr = max(l, r);
   auto max_sr = max(s, r);
