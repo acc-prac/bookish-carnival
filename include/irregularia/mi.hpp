@@ -41,13 +41,17 @@ public:
 
     BackingStorage value_ = 0;
 
-    for (std::size_t i = 0; i < (IntCount - 1); ++i) {
+    if constexpr (IntCount > 1) {
+
+      for (std::size_t i = 0; i < (IntCount - 1); ++i) {
   
-      //Insert value
-      value_ |= (input[i] & mask);
-      //Shift by bit width + 1 (carry bit)
-      value_ <<= (BitWidth + 1);
+        //Insert value
+        value_ |= (input[i] & mask);
+        //Shift by bit width + 1 (carry bit)
+        value_ <<= (BitWidth + 1);
   
+      }
+      
     }
     
     //Don't shift the last value
@@ -63,14 +67,20 @@ public:
     static auto mask = (static_cast<BackingStorage>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
+    
+    if constexpr (IntCount > 1) {
 
-    for (std::size_t i = 0; i < IntCount; ++i) {
+      for (std::size_t i = 0; i < IntCount; ++i) {
   
-      //During encoding numbers are inserted in reverse order,
-      //decode them in reverse order to correct that
-      if ((((value_ >> (i * (BitWidth + 1))) & mask) >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(UINT_MAX & mask) | ((value_ >> (i * (BitWidth + 1))) & mask)); }
-      else { data[IntCount - i - 1] = ((value_ >> (i * (BitWidth + 1))) & mask); }
+        auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
   
+        //During encoding numbers are inserted in reverse order,
+        //decode them in reverse order to correct that
+        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(UINT_MAX & mask) | val); }
+        else { data[IntCount - i - 1] = val; }
+  
+      }
+      
     }
 
     return data;
