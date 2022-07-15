@@ -27,58 +27,50 @@ private:
   typename traits::int_type value_;
 
 public:
- 
-  template <typename IndivStorage, std::size_t AtMostIntCount>
-  requires (
-    AtMostIntCount <= IntCount &&
-    AtMostIntCount > 0
-  )
-  static auto encode(const std::array<int, AtMostIntCount> &input) {
-  
-    //Create a mask with #bit-width bits set to one
+  template<typename IndivStorage, std::size_t AtMostIntCount>
+  requires(AtMostIntCount <= IntCount
+           && AtMostIntCount
+               > 0) static auto encode(const std::array<int, AtMostIntCount>& input)
+  {
+    // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
     if constexpr (IntCount > 1) {
-
       for (std::size_t i = 0; i < (IntCount - 1); ++i) {
-  
-        //Insert value
+        // Insert value
         value_ |= (input[i] & mask);
-        //Shift by bit width + 1 (carry bit)
+        // Shift by bit width + 1 (carry bit)
         value_ <<= (BitWidth + 1);
-  
       }
-      
     }
-    
-    //Don't shift the last value
+
+    // Don't shift the last value
     value_ |= (input[IntCount - 1] & mask);
-    
-    return multiple_int<BitWidth, BackingStorage> { value_ };
+
+    return multiple_int<BitWidth, BackingStorage> {value_};
   }
 
-  std::array<int, IntCount> decode() {
-
-    //Create a mask with #bit-width bits set to one
+  std::array<int, IntCount> decode()
+  {
+    // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
-    
-    if constexpr (IntCount > 1) {
 
+    if constexpr (IntCount > 1) {
       for (std::size_t i = 0; i < IntCount; ++i) {
-  
         auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
-  
-        //During encoding numbers are inserted in reverse order,
-        //decode them in reverse order to correct that
-        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
-        else { data[IntCount - i - 1] = val; }
-  
+
+        // During encoding numbers are inserted in reverse order,
+        // decode them in reverse order to correct that
+        if ((val >> (BitWidth - 1)) != 0) {
+          data[IntCount - i - 1] = (~(mask) | val);
+        } else {
+          data[IntCount - i - 1] = val;
+        }
       }
-      
     }
 
     return data;
@@ -131,15 +123,16 @@ public:
       return mi_sum;
     }
   }
-
-  auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
-      -> irregularia::multiple_int<BitWidth, BackingStorage>
-  {
-    return this->intv() < rhs.intv() ? *this : rhs;
-  }
 };
 
 };  // namespace irregularia
+
+auto operator<(irregularia::multiple_int<BitWidth, BackingStorage> lhs,
+               irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
+    -> irregularia::multiple_int<BitWidth, BackingStorage>
+{
+  return lhs.intv() < rhs.intv() ? lhs : rhs;
+}
 
 template<std::size_t BitWidth, typename BackingStorage>
 struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
