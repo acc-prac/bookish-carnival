@@ -138,7 +138,7 @@ public:
   }
 
   auto operator==(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
-      -> std::strong_ordering
+      -> bool
   {
     if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
       return this->intv() == rhs.intv();
@@ -148,7 +148,7 @@ public:
   }
 
   auto operator!=(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
-      -> std::strong_ordering
+      -> bool
   {
     if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
       return this->intv() != rhs.intv();
