@@ -1,5 +1,3 @@
-#include <bitset>
-
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 #include <irregularia/milimits.hpp>
@@ -90,11 +88,11 @@ TEST(Max, TwoWay)
 
   // Operators derived from spaceship
 
-  EXPECT_TRUE(l < r) << std::bitset<32>(l.intv()) << " < " << std::bitset<32>(r.intv())
+  EXPECT_TRUE(l < r) << std::hex << l.intv() << " < " << std::hex << r.intv()
                      << " failed\n";
-  EXPECT_TRUE(s < r) << std::bitset<32>(l.intv()) << " < " << std::bitset<32>(r.intv())
+  EXPECT_TRUE(s < r) << std::hex << l.intv() << " < " << std::hex << r.intv()
                      << " failed\n";
-  EXPECT_TRUE(s < l) << std::bitset<32>(l.intv()) << " < " << std::bitset<32>(r.intv())
+  EXPECT_TRUE(s < l) << std::hex << l.intv() << " < " << std::hex << r.intv()
                      << " failed\n";
 
   auto max_lr = max(l, r);
