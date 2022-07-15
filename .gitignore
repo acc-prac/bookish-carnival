@@ -94,5 +94,10 @@ build
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,c,cmake
 
+
+# Vscode and clangd cache
 .vscode/
 .cache/
+
+# Benchmarks
+out.csv
