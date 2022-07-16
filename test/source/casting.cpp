@@ -113,7 +113,7 @@ TEST(Casting, DownCast_NoCarryBits)
   }
 
   {
-    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>({0b111101111101101, 0b101010100011000});
+    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>({0b011101111101101, 0b001010100011000});
 
     auto t = static_cast<irregularia::multiple_int<7, std::uint16_t>>(l);  
 
@@ -147,7 +147,7 @@ TEST(Casting, DownCast_WithCarryBits)
   }
 
   {
-    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>({0b11101111101101, 0b10010100011000});
+    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>({0b111101111101101, 0b110010100011000});
 
     l = l + l; // Now we have 0b11011111011010'00101000110000 and both carry bits are set
 
