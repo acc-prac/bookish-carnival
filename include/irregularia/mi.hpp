@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <compare>
+#include <functional>
 #include <type_traits>
 
 #include "mitraits.hpp"
@@ -27,64 +30,54 @@ private:
   typename traits::int_type value_;
 
 public:
- 
-  template <typename IndivStorage, std::size_t AtMostIntCount>
-  requires (
-    AtMostIntCount <= IntCount &&
-    AtMostIntCount > 0 &&
-    (sizeof(IndivStorage) * 8) >= BitWidth
-  )
-  static auto encode(const std::array<IndivStorage, AtMostIntCount> &input) {
-  
-    //Create a mask with #bit-width bits set to one
+  /* clang-format off */
+  template<std::size_t AtMostIntCount> 
+  requires(AtMostIntCount <= IntCount && AtMostIntCount > 0)
+  static auto encode(const std::array<int, AtMostIntCount>& input)
+  /* clang-format on */
+  {
+    // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     BackingStorage value_ = 0;
 
     if constexpr (IntCount > 1) {
-
       for (std::size_t i = 0; i < (IntCount - 1); ++i) {
-  
-        //Insert value
+        // Insert value
         value_ |= (input[i] & mask);
-        //Shift by bit width + 1 (carry bit)
+        // Shift by bit width + 1 (carry bit)
         value_ <<= (BitWidth + 1);
-  
       }
-      
     }
-    
-    //Don't shift the last value
-    value_ |= (input[IntCount - 1] & mask);
-    
-    return multiple_int<BitWidth, BackingStorage> { value_ };
 
+    // Don't shift the last value
+    value_ |= (input[IntCount - 1] & mask);
+
+    return multiple_int<BitWidth, BackingStorage> {value_};
   }
 
-  std::array<int, IntCount> decode() {
-
-    //Create a mask with #bit-width bits set to one
+  std::array<int, IntCount> decode()
+  {
+    // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
-    
-    if constexpr (IntCount > 1) {
 
+    if constexpr (IntCount > 1) {
       for (std::size_t i = 0; i < IntCount; ++i) {
-  
         auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
-  
-        //During encoding numbers are inserted in reverse order,
-        //decode them in reverse order to correct that
-        if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
-        else { data[IntCount - i - 1] = val; }
-  
+
+        // During encoding numbers are inserted in reverse order,
+        // decode them in reverse order to correct that
+        if ((val >> (BitWidth - 1)) != 0) {
+          data[IntCount - i - 1] = (~(mask) | val);
+        } else {
+          data[IntCount - i - 1] = val;
+        }
       }
-      
     }
 
     return data;
-
   }
 
   auto intv() const -> typename traits::int_type
@@ -97,7 +90,7 @@ public:
     return this->value_ & traits::carry_mask;
   }
 
-  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs)
+  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
       -> irregularia::multiple_int<BitWidth, BackingStorage>
   {
     using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
@@ -134,6 +127,45 @@ public:
       return mi_sum;
     }
   }
+
+  auto operator<=>(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
+      -> std::strong_ordering
+  {
+    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
+      return this->intv() <=> rhs.intv();
+    } else {
+      return this->value_ <=> rhs.value_;
+    }
+  }
+
+  auto operator==(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
+  {
+    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
+      return this->intv() == rhs.intv();
+    } else {
+      return this->value_ == rhs.value_;
+    }
+  }
+
+  auto operator!=(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
+  {
+    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
+      return this->intv() != rhs.intv();
+    } else {
+      return this->value_ != rhs.value_;
+    }
+  }
 };
 
 };  // namespace irregularia
+
+template<std::size_t BitWidth, typename BackingStorage>
+struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
+{
+  constexpr auto operator()(
+      irregularia::multiple_int<BitWidth, BackingStorage> const& lhs,
+      irregularia::multiple_int<BitWidth, BackingStorage> const& rhs) const -> bool
+  {
+    return lhs < rhs;
+  }
+};
