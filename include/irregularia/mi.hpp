@@ -200,7 +200,8 @@ public:
 
       for(int i = 0; i < IntCount; ++i)
       {
-          value |= ((value_ & (smallerMultipleInt_IntAndCarryMask << i*(BitWidth+1))) >> i*(SmallerBitWidth+1));
+          value |= ((value_ & (static_cast<BackingStorage>(smallerMultipleInt_IntAndCarryMask) << i*(BitWidth+1))) 
+                     >> i*(SmallerBitWidth+1));
 
           //If the carry-bit is set, set it also in the smaller int
           if(value_ & (biggerMultipleInt_CarryMask << i*(BitWidth+1)))
@@ -212,7 +213,8 @@ public:
               //If the carry-bit should not be set, but it is at the moment, delete it
               if(value_ & (smallerMultipleInt_CarryMask << 2*i*(SmallerBitWidth+1)))
               {
-                  value &= (biggerMultipleInt_IntAndCarryMask ^ (smallerMultipleInt_CarryMask << i*(SmallerBitWidth+1)));
+                  value &= (static_cast<SmallerBackingStorage>(biggerMultipleInt_IntAndCarryMask) ^ 
+                           (smallerMultipleInt_CarryMask << i*(SmallerBitWidth+1)));
               }
           }
       }
