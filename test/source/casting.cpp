@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 
+#define IRREGULARIA_BIT_CARRY_POLICY 1
+
 //UpCast
 TEST(Casting, UpCast_NoSignAndNoCarryBits)
 {
@@ -156,15 +158,15 @@ TEST(Casting, DownCast_WithCarryBits)
   }
 
   {
-    auto l = irregularia::multiple_int<9, std::uint64_t>::encode<int, 6>({0b110011001, 0b101100000, 
+    auto l = irregularia::multiple_int<9, std::uint64_t>::encode<int, 6>({0b110011001, 0b101100000,
                                                                           0b101010101, 0b111111111,
                                                                           0b100000000, 0b100000001});
 
-    auto t = static_cast<irregularia::multiple_int<4, std::uint32_t>>(l);  
-
     l = l + l; // Now we have 0b100110010'011000000'010101010'111111110'00000000'000000010 and all six carry bits are set
 
-    EXPECT_EQ(0b00010'00000'01010'01110'00000'00010, t.intv());
-    EXPECT_EQ(0b10000'10000'10000'10000'10000'10000, t.carry());
+    auto t = static_cast<irregularia::multiple_int<4, std::uint32_t>>(l);  
+
+    EXPECT_EQ(0b00'00010'00000'01010'01110'00000'00010, t.intv());
+    EXPECT_EQ(0b00'10000'10000'10000'10000'10000'10000, t.carry());
   }
 }
