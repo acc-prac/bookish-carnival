@@ -68,7 +68,7 @@ TEST(Casting, SignAndCarryBits)
 
     irregularia::multiple_int<7, std::uint16_t> t = l; 
 
-    t += t;         
+    t = t + t;         
 
     EXPECT_EQ(0b01111'110'01111'100, t.intv());
     EXPECT_EQ(0b10000'000'10000'000, t.carry());
@@ -79,7 +79,7 @@ TEST(Casting, SignAndCarryBits)
 
     irregularia::multiple_int<11, std::uint32_t> t = l;    
 
-    t += t;        
+    t = t + t;         
 
     EXPECT_EQ(0b00000000'0111111'11110'0111111'10100, t.intv());
     EXPECT_EQ(0b00000000'10000000'0000'1000000'00000, t.carry());
@@ -90,7 +90,7 @@ TEST(Casting, SignAndCarryBits)
 
     irregularia::multiple_int<19, std::uint64_t> t = l;
 
-    t += t;          
+    t = t + t;         
 
     EXPECT_EQ(0b0000'01111111111'100100110'01111111111'100000000'01111111111'111110100, t.intv());
     EXPECT_EQ(0b0000'10000000000'000000000'10000000000'000000000'10000000000'000000000, t.carry());
