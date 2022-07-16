@@ -211,7 +211,7 @@ public:
           else
           {
               //If the carry-bit should not be set, but it is at the moment, delete it
-              if(value_ & (smallerMultipleInt_CarryMask << 2*i*(SmallerBitWidth+1)))
+              if(value & (smallerMultipleInt_CarryMask << i*(SmallerBitWidth+1)))
               {
                   value &= (static_cast<SmallerBackingStorage>(biggerMultipleInt_IntAndCarryMask) ^ 
                            (smallerMultipleInt_CarryMask << i*(SmallerBitWidth+1)));
