@@ -179,6 +179,47 @@ public:
 
   }
 
+  template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
+  requires(2*SmallerBitWidth + 1 == BitWidth && 2*sizeof(SmallerBackingStorage) == sizeof(LargerBackingStorage))
+  explicit operator multiple_int<SmallerBitWidth,SmallerBackingStorage>() const
+  {
+      using lower_multiple_int = multiple_int<SmallerBitWidth, SmallerBackingStorage>;
+      //Mask for one smaller int
+      static constexpr auto smallerMultipleInt_IntMask = detail::_int_mask<lower_multiple_int::IntCount, SmallerBitWidth, SmallerBackingStorage>::pattern;
+      //Mask for one smaller int carry-bit
+      static constexpr auto smallerMultipleInt_CarryMask = detail::_carry_mask<lower_multiple_int::IntCount, SmallerBitWidth, SmallerBackingStorage>::pattern;
+      //Mask for smaller int + carry-bit
+      static constexpr auto smallerMultipleInt_IntAndCarryMask = smallerMultipleInt_IntMask | smallerMultipleInt_CarryMask;
+      //Mask for one bigger int carry-bit
+      static constexpr auto biggerMultipleInt_CarryMask = detail::_carry_mask<IntCount, BitWidth, BackingStorage>::pattern;
+      //Mask for bigger int all bits are set, but not the unused bits
+      static constexpr auto biggerMultipleInt_IntAndCarryMask = traits::int_mask | traits::carry_mask;
+
+      SmallerBackingStorage value = 0;
+
+
+      for(int i = 0; i < IntCount; ++i)
+      {
+          value |= ((value_ & (smallerMultipleInt_IntAndCarryMask << i*(BitWidth+1))) >> i*(SmallerBitWidth+1));
+
+          //If the carry-bit is set, set it also in the smaller int
+          if(value_ & (biggerMultipleInt_CarryMask << i*(BitWidth+1)))
+          {
+              value |= (smallerMultipleInt_CarryMask << i*(SmallerBitWidth+1));
+          }
+          else
+          {
+              //If the carry-bit should not be set, but it is at the moment, delete it
+              if(value_ & (smallerMultipleInt_CarryMask << 2*i*(SmallerBitWidth+1)))
+              {
+                  value &= (biggerMultipleInt_IntAndCarryMask ^ (smallerMultipleInt_CarryMask << i*(SmallerBitWidth+1)));
+              }
+          }
+      }
+
+      return multiple_int<SmallerBitWidth,SmallerBackingStorage>(value);
+  }
+
   auto intv() const -> typename traits::int_type
   {
     return this->value_ & traits::int_mask;
