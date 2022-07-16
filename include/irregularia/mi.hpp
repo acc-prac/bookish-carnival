@@ -87,9 +87,7 @@ public:
     // the second half
     for (int half = 0; half < 2; ++half)  // half == 0: First half; half == 1: Second half
     {
-      for (int i = half;
-           i < multiple_int<SmallerBitWidth, SmallerBackingStorage>::IntCount;
-           i += 2)
+      for (int i = half; i < lower_multiple_int::IntCount; i += 2)
       {
         const int shiftAmount = i * (SmallerBitWidth + 1);
         // If we are in the first half, we do not need to shift the values;
