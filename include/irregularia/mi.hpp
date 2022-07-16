@@ -180,7 +180,7 @@ public:
   }
 
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
-  requires(2*SmallerBitWidth + 1 == BitWidth && 2*sizeof(SmallerBackingStorage) == sizeof(LargerBackingStorage))
+  requires(2*SmallerBitWidth + 1 == BitWidth && 2*sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
   explicit operator multiple_int<SmallerBitWidth,SmallerBackingStorage>() const
   {
       using lower_multiple_int = multiple_int<SmallerBitWidth, SmallerBackingStorage>;
