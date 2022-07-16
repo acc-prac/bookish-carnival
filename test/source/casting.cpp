@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 
-TEST(Casting, NoSignAndNoCarryBits)
+TEST(Casting, UpCast_NoSignAndNoCarryBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b011, 0b000});
@@ -31,7 +31,7 @@ TEST(Casting, NoSignAndNoCarryBits)
   }
 }
 
-TEST(Casting, SignButNoCarryBits)
+TEST(Casting, UpCast_SignButNoCarryBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b111, 0b100});
@@ -61,7 +61,7 @@ TEST(Casting, SignButNoCarryBits)
   }
 }
 
-TEST(Casting, SignAndCarryBits)
+TEST(Casting, UpCast_SignAndCarryBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b111, 0b110});
@@ -95,4 +95,37 @@ TEST(Casting, SignAndCarryBits)
     EXPECT_EQ(0b0000'01111111111'100100110'01111111111'100000000'01111111111'111110100, t.intv());
     EXPECT_EQ(0b0000'10000000000'000000000'10000000000'000000000'10000000000'000000000, t.carry());
   }
+}
+
+
+TEST(Casting, DownCast_NoCarryBits)
+{
+  {
+    auto l = irregularia::multiple_int<7, std::uint16_t>::encode<int, 2>({0b1111101, 0b0000111});
+
+    auto r = static_cast<multiple_int<3, std::uint8_t>>(l);  
+
+    EXPECT_EQ(0b0101'0111, t.intv());
+    EXPECT_EQ(0, t.carry());
+  }
+
+  /*
+  {
+    auto l = irregularia::multiple_int<11, std::uint32_t>::encode<int, 2>({0b01111, 0b01010});
+
+    irregularia::multiple_int<11, std::uint32_t> t = l;          
+
+    EXPECT_EQ(0b00000000'0000000'01111'0000000'01010, t.intv());
+    EXPECT_EQ(0, t.carry());
+  }
+
+  {
+    auto l = irregularia::multiple_int<19, std::uint64_t>::encode<int, 3>({0b000000001, 0b010010011, 0b001111010});
+
+    irregularia::multiple_int<19, std::uint64_t> t = l;          
+
+    EXPECT_EQ(0b0000'00000000000'010010011'00000000000'000000001'00000000000'001111010, t.intv());
+    EXPECT_EQ(0, t.carry());
+  }
+  */
 }
