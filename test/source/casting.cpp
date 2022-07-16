@@ -113,7 +113,7 @@ TEST(Casting, DownCast_NoCarryBits)
   }
 
   {
-    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>({0b11101111101101, 0b01010100011000});
+    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>({0b111101111101101, 0b101010100011000});
 
     auto t = static_cast<irregularia::multiple_int<7, std::uint16_t>>(l);  
 
