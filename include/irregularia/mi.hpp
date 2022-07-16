@@ -1,8 +1,36 @@
 #pragma once
 
 #include <type_traits>
-
 #include "mitraits.hpp"
+
+template<class>
+struct width2;
+
+template<>
+struct width2<uint8_t>
+{
+    using type=uint16_t;
+};
+
+template<>
+struct width2<uint16_t>
+{
+    using type=uint32_t;
+};
+
+template<>
+struct width2<uint32_t>
+{
+    using type=uint64_t;
+};
+
+template<>
+struct width2<uint64_t>
+{
+    //If we are in the biggest uint-datatype, stop the recursion of the
+    //friend class multiple_int<2*BitWidth+1, typename width2<BackingStorage>::type> clausel
+    using type=uint64_t;  
+};
 
 namespace irregularia
 {
@@ -17,12 +45,76 @@ public:
   using traits = detail::_multiple_int_traits<IntCount, BitWidth, BackingStorage>;
 
   friend class std::numeric_limits<multiple_int<BitWidth, BackingStorage>>;
+  //We cannot access the private member in the conversion constructor because we
+  //are here in a template class. For this reason, we need to use the "friend class" clausel
+  friend class multiple_int<2*BitWidth+1, typename width2<BackingStorage>::type>;
 
 private:
   multiple_int(typename traits::int_type value)
       : value_ {value}
   {
   }
+
+public:
+  template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
+  requires(2*SmallerBitWidth + 1 == BitWidth && 2*sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
+  multiple_int(multiple_int<SmallerBitWidth, SmallerBackingStorage> halfSizeMultipleInt)
+      : value_ {0}
+  {
+    using lower_multiple_int = multiple_int<SmallerBitWidth, SmallerBackingStorage>;
+    // Mask for one smaller int
+    static constexpr auto smallerMultipleInt_IntMask =
+        detail::_int_mask<lower_multiple_int::IntCount, SmallerBitWidth, SmallerBackingStorage>::pattern;
+    // Mask for one smaller int carry-bit
+    static constexpr auto smallerMultipleInt_CarryMask =
+        detail::_carry_mask<lower_multiple_int::IntCount, SmallerBitWidth, SmallerBackingStorage>::pattern;
+    // Mask for one smaller int sign-"bit"
+    static constexpr auto smallerMultipleInt_SignMask =
+        static_cast<SmallerBackingStorage>(1) << SmallerBitWidth - 1;
+    // Mask for one bigger int
+    static constexpr auto biggerMultipleInt_IntMask =
+        detail::_int_mask<IntCount, BitWidth, BackingStorage>::pattern;
+    // Mask for one bigger int carry-bit
+    static constexpr auto biggerMultipleInt_CarryMask =
+        detail::_carry_mask<IntCount, BitWidth, BackingStorage>::pattern;
+    // Mask for all bits being 1 above the smallerMultipleInt_IntMask (sets all bits to 1,
+    // if the sign-"bit" of the smaller int is set)
+    static constexpr auto biggerMultipleInt_SignMask =
+        biggerMultipleInt_IntMask ^ smallerMultipleInt_IntMask;
+
+    // Place the values of the smaller ints with even indices in the first half of the
+    // (bigger) internal storage and the values of the smaller ints with odd indices in
+    // the second half
+    for (int half = 0; half < 2; ++half)  // half == 0: First half; half == 1: Second half
+    {
+      for (int i = half;
+           i < multiple_int<SmallerBitWidth, SmallerBackingStorage>::IntCount;
+           i += 2)
+      {
+        const int shiftAmount = i * (SmallerBitWidth + 1);
+        // If we are in the first half, we do not need to shift the values;
+        // if we are in the second half, we have to shift it to the half minus the
+        // shiftAmount because we already shifted it by this amount
+        const int halfShiftAmount =
+            half ? (lower_multiple_int::IntCount - 1) * (BitWidth + 1) - shiftAmount : 0;
+
+        value_ |= (static_cast<BackingStorage>(halfSizeMultipleInt.value_)
+                   & (smallerMultipleInt_IntMask << i * (SmallerBitWidth + 1))) << halfShiftAmount;
+
+        // Extend "sign" bit, if it is set
+        if (halfSizeMultipleInt.value_ & (smallerMultipleInt_SignMask << shiftAmount)) {
+          value_ |= (biggerMultipleInt_SignMask << shiftAmount) << halfShiftAmount;
+        }
+
+        // Set the carry-bit at the right position, if it is set
+        if (halfSizeMultipleInt.value_ & (smallerMultipleInt_CarryMask << shiftAmount)) {
+          value_ |= (biggerMultipleInt_CarryMask << shiftAmount) << halfShiftAmount;
+        }
+      }
+    }
+  }
+
+private:
 
   typename traits::int_type value_;
 

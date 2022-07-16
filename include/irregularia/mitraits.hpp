@@ -75,13 +75,8 @@ struct _multiple_int_traits
   static_assert(BitWidth > 0,
                 "No such thing as integers with 0 bits (at least, not here!)");
 
-  // Add one for the carry bit
-  static auto constexpr min_byte_width =
-      (BitWidth + 1) * IntCount / 8 + ((((BitWidth + 1) * IntCount) % 8 == 0) ? 0 : 1);
-
-  static_assert(sizeof(BackingStorage) >= min_byte_width,
-                "Invalid BackingStorage; the specified amount of ints and "
-                "their bits do not fit!");
+  static_assert(IntCount >= 1,
+                "At least one integer must be stored");
 
   using int_type = BackingStorage;
 
