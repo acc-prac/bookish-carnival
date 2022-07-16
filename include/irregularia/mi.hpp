@@ -27,7 +27,9 @@ struct width2<uint32_t>
 template<>
 struct width2<uint64_t>
 {
-    using type=uint64_t;
+    //If we are in the biggest uint-datatype, stop the recursion of the
+    //friend class multiple_int<2*BitWidth+1, typename width2<BackingStorage>::type> clausel
+    using type=uint64_t;  
 };
 
 namespace irregularia
