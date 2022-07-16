@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 
+//We need this define, because we want to have the carry-bits stored when we add 
+//two multiple_ints together
 #define IRREGULARIA_BIT_CARRY_POLICY 1
 
 //UpCast
