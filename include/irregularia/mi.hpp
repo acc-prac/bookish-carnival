@@ -37,7 +37,7 @@ public:
 		static constexpr auto evenIndicesMask = detail::_int_pattern<(IntCount % 2 == 0) ? IntCount-2 : IntCount-1, SmallerBitWidth, SmallerBackingStorage>::value;
 		static constexpr auto oddIndicesMask = detail::_int_pattern<(IntCount % 2 == 0) ? IntCount-1 : IntCount-2, SmallerBitWidth, SmallerBackingStorage>::value;
 
-		//Mask all bits other than the sign bits with 1s
+		//Mask all sign bits with 1s
 		static constexpr auto signMaskShiftedByOne = detail::_sign_pattern<IntCount, SmallerBitWidth, SmallerBackingStorage, BackingStorage>::value;
 
 		//E.g. −2 in 3b is 0b110 -> Mask: 0000; 2 in 3b is 0b010 -> Mask: 1000
