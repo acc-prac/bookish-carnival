@@ -49,7 +49,7 @@ public:
 		value_ |= halfSizeMultipleInt.value_ & evenIndicesMask;
 
 		//Transfer all small ints with ODD indices
-		value_ |= ((static_cast<BackingStorage>(halfSizeMultipleInt.value_ & oddIndicesMask)) << IntCount * (SmallerBitWidth+1));
+		value_ |= ((static_cast<BackingStorage>(halfSizeMultipleInt.value_ & oddIndicesMask)) << ((IntCount % 2 == 0) ? (IntCount-1) : (IntCount)) * (SmallerBitWidth+1));
 
 		//Add sign mask to the result (Negative numbers become now negative again)
 		value_ += signMaskShiftedByOne;
