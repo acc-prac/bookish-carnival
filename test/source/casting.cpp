@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 
-TEST(Casting, NoSignAndNoCarryBits)
+TEST(Casting, UpCast_NoSignBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b011, 0b000});
@@ -31,7 +31,7 @@ TEST(Casting, NoSignAndNoCarryBits)
   }
 }
 
-TEST(Casting, SignButNoCarryBits)
+TEST(Casting, UpCast_SignBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b111, 0b100});
@@ -60,40 +60,3 @@ TEST(Casting, SignButNoCarryBits)
     EXPECT_EQ(0, t.carry());
   }
 }
-//This test does not work anymore because we reset all carry-bits
-/*TEST(Casting, UpCast_SignAndCarryBits)
-{
-  {
-    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b111, 0b110});
-
-    irregularia::multiple_int<7, std::uint16_t> t = l; 
-
-    t = t + t;         
-
-    EXPECT_EQ(0b01111'110'01111'100, t.intv());
-    EXPECT_EQ(0b10000'000'10000'000, t.carry());
-  }
-
-  {
-    auto l = irregularia::multiple_int<5, std::uint16_t>::encode<int, 2>({0b11111, 0b11010});
-
-    irregularia::multiple_int<11, std::uint32_t> t = l;    
-
-    t = t + t;         
-
-    EXPECT_EQ(0b00000000'0111111'11110'0111111'10100, t.intv());
-    EXPECT_EQ(0b00000000'10000000'0000'1000000'00000, t.carry());
-  }
-
-  {
-    auto l = irregularia::multiple_int<9, std::uint32_t>::encode<int, 3>({0b110000000, 0b110010011, 0b111111010});
-
-    irregularia::multiple_int<19, std::uint64_t> t = l;
-
-    t = t + t;         
-
-    EXPECT_EQ(0b0000'01111111111'100100110'01111111111'100000000'01111111111'111110100, t.intv());
-    EXPECT_EQ(0b0000'10000000000'000000000'10000000000'000000000'10000000000'000000000, t.carry());
-  }
-}
-*/
