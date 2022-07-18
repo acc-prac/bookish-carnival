@@ -5,7 +5,7 @@
 
 
 //DownCast
-TEST(Casting, DownCast_NoCarryBits)
+TEST(DownCasting, NoCarryBits)
 {
   {
     auto l = irregularia::multiple_int<7, std::uint16_t>::encode<int, 2>({0b1111101, 0b0000111});
@@ -37,7 +37,7 @@ TEST(Casting, DownCast_NoCarryBits)
   }
 }
 
-TEST(Casting, DownCast_WithCarryBits)
+TEST(DownCasting, WithCarryBits)
 {
   {
     auto l = irregularia::multiple_int<7, std::uint16_t>::encode<int, 2>({0b1111101, 0b1000111});

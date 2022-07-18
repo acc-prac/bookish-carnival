@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 
-TEST(Casting, UpCast_NoSignBits)
+TEST(Upcast, NoSignBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b011, 0b000});
@@ -31,7 +31,7 @@ TEST(Casting, UpCast_NoSignBits)
   }
 }
 
-TEST(Casting, UpCast_SignBits)
+TEST(Upcast, SignBits)
 {
   {
     auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b111, 0b100});
