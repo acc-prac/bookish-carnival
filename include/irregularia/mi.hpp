@@ -166,20 +166,20 @@ public:
 
     // extracts integers in the lower "half"
     auto lower_half = static_cast<SmallerBackingStorage>(truncated & lower);
-    //EXPECT_EQ(static_cast<SmallerBackingStorage>(0b0'101'000'111'000'000), lower_half)
+    // EXPECT_EQ(static_cast<SmallerBackingStorage>(0b0'101'000'111'000'000), lower_half)
 
     // extracts integers in the upper "half"
     auto upper_half = truncated & upper;
-    //EXPECT_EQ(0b00'000001'000000'000000'000000'000000, upper_half);
+    // EXPECT_EQ(0b00'000001'000000'000000'000000'000000, upper_half);
 
-    // shift the upper half down by half the amount of viable bits in our class
-    auto upper_half2 =
-        static_cast<SmallerBackingStorage>(upper_half >> (IntCount * (BitWidth + 1) / 2));
+    static constexpr auto upper_shift_down =
+        ((IntCount % 2 == 0) ? (IntCount - 1) : (IntCount)) * (BitWidth + 1) / 2;
+    auto upper_half2 = static_cast<SmallerBackingStorage>(upper_half >> upper_shift_down);
     // EXPECT_EQ(static_cast<SmallerBackingStorage>(0b0'000'001'000'000'000), upper_half2)
 
     // merge results
-    return target_type{static_cast<SmallerBackingStorage>(lower_half | upper_half2)};
-    //EXPECT_EQ(0b0'101'001'111'000'000, result);
+    return target_type {static_cast<SmallerBackingStorage>(lower_half | upper_half2)};
+    // EXPECT_EQ(0b0'101'001'111'000'000, result);
   }
 
   auto intv() const -> typename traits::int_type
