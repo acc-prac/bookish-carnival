@@ -4,5 +4,6 @@ target_sources(irregularia_test PRIVATE
     traits.cpp 
     encoding.cpp  
     decoding.cpp  
-    casting.cpp
+    upcasting.cpp
+    downcasting.cpp
 )
