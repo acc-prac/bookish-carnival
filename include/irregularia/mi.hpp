@@ -144,7 +144,7 @@ public:
     using target_type = multiple_int<SmallerBitWidth, SmallerBackingStorage>;
 
     static constexpr auto trunc =
-        truncation_mask_v<IntCount, BitWidth, SmallerBitWidth, BackingStorage>;
+        detail::truncation_mask_v<IntCount, BitWidth, SmallerBitWidth, BackingStorage>;
 
     // EXPECT_EQ(0b00'000111'000111'000111'000111'000111, trunc);
 
