@@ -33,12 +33,13 @@ private:
   }
 
 public:
+  /* clang-format off */
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
   requires(2 * SmallerBitWidth + 1 == BitWidth
            && 2 * sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
-      multiple_int(
-          multiple_int<SmallerBitWidth, SmallerBackingStorage> halfSizeMultipleInt)
+  multiple_int(multiple_int<SmallerBitWidth, SmallerBackingStorage> halfSizeMultipleInt)
       : value_ {0}
+  /* clang-format on */
   {
     using lower_multiple_int = multiple_int<SmallerBitWidth, SmallerBackingStorage>;
 
@@ -138,10 +139,12 @@ public:
     return data;
   }
 
+  /* clang-format off */
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
-  requires(2 * SmallerBitWidth + 1 == BitWidth
-           && 2 * sizeof(SmallerBackingStorage) == sizeof(BackingStorage)) explicit
-  operator multiple_int<SmallerBitWidth, SmallerBackingStorage>() const
+  requires(2 * SmallerBitWidth + 1 == BitWidth && 
+           2 * sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
+  explicit operator multiple_int<SmallerBitWidth, SmallerBackingStorage>() const
+  /* clang-format on */
   {
     using source_type = multiple_int<BitWidth, BackingStorage>;
     using target_type = multiple_int<SmallerBitWidth, SmallerBackingStorage>;
