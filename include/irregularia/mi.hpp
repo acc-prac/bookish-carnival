@@ -115,28 +115,41 @@ public:
     return multiple_int<BitWidth, BackingStorage> {value_};
   }
 
-  std::array<int, IntCount> decode()
-  {
-    // Create a mask with #bit-width bits set to one
+  auto decode() const -> std::array<int, IntCount> {
+
+    //Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
-
+    
+    //Avoid compiler warnings
     if constexpr (IntCount > 1) {
-      for (std::size_t i = 0; i < IntCount; ++i) {
-        auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
 
-        // During encoding numbers are inserted in reverse order,
-        // decode them in reverse order to correct that
-        if ((val >> (BitWidth - 1)) != 0) {
-          data[IntCount - i - 1] = (~(mask) | val);
-        } else {
-          data[IntCount - i - 1] = val;
-        }
+      for (std::size_t i = 0; i < IntCount; ++i) {
+      
+        //During encoding numbers are inserted in reverse order,
+        //decode them in reverse order to correct that
+      
+        //Extracts one number from the internal storage
+        auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
+        //Create a mask depending on the MSB of the extracted number
+        auto neg_mask = ((~((val >> (BitWidth - 1)) - 1)) << BitWidth);
+    
+        data[IntCount - i - 1] = (neg_mask | val);
+  
+        //auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
+  
+        //During encoding numbers are inserted in reverse order,
+        //decode them in reverse order to correct that
+        //if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
+        //else { data[IntCount - i - 1] = val; }
+  
       }
+      
     }
 
     return data;
+
   }
 
   /* clang-format off */

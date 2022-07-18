@@ -11,7 +11,6 @@ TEST(Decoding, SignedAddition)
 
     EXPECT_EQ(0, s.decode()[0]);
     EXPECT_EQ(1, s.decode()[1]);
-    // EXPECT_EQ(0, s.carry()); fails problem with + operator ?
   }
 
   {
