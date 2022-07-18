@@ -4,8 +4,8 @@
 TEST(Decoding, SignedAddition)
 {
   {
-    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({2, 1});
-    auto r = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({-2, 0});
+    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<2>({2, 1});
+    auto r = irregularia::multiple_int<3, std::uint8_t>::encode<2>({-2, 0});
 
     auto s = l + r;
 
@@ -15,8 +15,8 @@ TEST(Decoding, SignedAddition)
   }
 
   {
-    auto l = irregularia::multiple_int<3, std::uint16_t>::encode<int, 3>({2, 1, -2});
-    auto r = irregularia::multiple_int<3, std::uint16_t>::encode<int, 3>({-2, 1, -2});
+    auto l = irregularia::multiple_int<3, std::uint16_t>::encode<3>({2, 1, -2});
+    auto r = irregularia::multiple_int<3, std::uint16_t>::encode<3>({-2, 1, -2});
 
     auto s = l + r;
 
@@ -26,8 +26,8 @@ TEST(Decoding, SignedAddition)
   }
 
   {
-    auto l = irregularia::multiple_int<7, std::uint32_t>::encode<int, 2>({63, 23});
-    auto r = irregularia::multiple_int<7, std::uint32_t>::encode<int, 2>({-1, 15});
+    auto l = irregularia::multiple_int<7, std::uint32_t>::encode<2>({63, 23});
+    auto r = irregularia::multiple_int<7, std::uint32_t>::encode<2>({-1, 15});
 
     auto s = l + r;
 

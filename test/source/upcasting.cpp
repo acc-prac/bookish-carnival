@@ -4,7 +4,7 @@
 TEST(Upcast, NoSignBits)
 {
   {
-    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b011, 0b000});
+    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<2>({0b011, 0b000});
 
     irregularia::multiple_int<7, std::uint16_t> t = l;
 
@@ -14,7 +14,7 @@ TEST(Upcast, NoSignBits)
 
   {
     auto l =
-        irregularia::multiple_int<5, std::uint16_t>::encode<int, 2>({0b01111, 0b01010});
+        irregularia::multiple_int<5, std::uint16_t>::encode<2>({0b01111, 0b01010});
 
     irregularia::multiple_int<11, std::uint32_t> t = l;
 
@@ -23,7 +23,7 @@ TEST(Upcast, NoSignBits)
   }
 
   {
-    auto l = irregularia::multiple_int<9, std::uint32_t>::encode<int, 3>(
+    auto l = irregularia::multiple_int<9, std::uint32_t>::encode<3>(
         {0b000000001, 0b010010011, 0b001111010});
 
     irregularia::multiple_int<19, std::uint64_t> t = l;
@@ -37,7 +37,7 @@ TEST(Upcast, NoSignBits)
 TEST(Upcast, SignBits)
 {
   {
-    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<int, 2>({0b111, 0b100});
+    auto l = irregularia::multiple_int<3, std::uint8_t>::encode<2>({0b111, 0b100});
 
     irregularia::multiple_int<7, std::uint16_t> t = l;
 
@@ -47,7 +47,7 @@ TEST(Upcast, SignBits)
 
   {
     auto l =
-        irregularia::multiple_int<5, std::uint16_t>::encode<int, 2>({0b11111, 0b11010});
+        irregularia::multiple_int<5, std::uint16_t>::encode<2>({0b11111, 0b11010});
 
     irregularia::multiple_int<11, std::uint32_t> t = l;
 
@@ -56,7 +56,7 @@ TEST(Upcast, SignBits)
   }
 
   {
-    auto l = irregularia::multiple_int<9, std::uint32_t>::encode<int, 3>(
+    auto l = irregularia::multiple_int<9, std::uint32_t>::encode<3>(
         {0b100000001, 0b110010011, 0b101111010});
 
     irregularia::multiple_int<19, std::uint64_t> t = l;

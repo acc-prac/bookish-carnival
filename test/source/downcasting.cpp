@@ -9,7 +9,7 @@
 TEST(DownCasting, Simple)
 {
   {
-    auto l = irregularia::multiple_int<7, std::uint16_t>::encode<int, 2>(
+    auto l = irregularia::multiple_int<7, std::uint16_t>::encode<2>(
         {0b01111101, 0b0000111});
 
     auto t = static_cast<irregularia::multiple_int<3, std::uint8_t>>(l);
@@ -19,7 +19,7 @@ TEST(DownCasting, Simple)
   }
 
   {
-    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<int, 2>(
+    auto l = irregularia::multiple_int<15, std::uint32_t>::encode<2>(
         {0b011101111101101, 0b001010100011000});
 
     auto t = static_cast<irregularia::multiple_int<7, std::uint16_t>>(l);
@@ -34,7 +34,7 @@ TEST(DownCasting, Simple)
 TEST(DownCasting, Interleaved)
 {
   {
-    auto l = irregularia::multiple_int<9, std::uint64_t>::encode<int, 6>(
+    auto l = irregularia::multiple_int<9, std::uint64_t>::encode<6>(
         {0b110011001, 0b001100000, 0b101010101, 0b111111111, 0b000000000, 0b100000001});
 
     // 11001
