@@ -43,8 +43,10 @@ static void sum_red_bench(benchmark::State& state)
   auto const n_elements = state.range(0);
   Container<T> const vals(n_elements, T {1});
 
+  auto const init = T {};
+
   for (auto _ : state) {
-    benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend()));
+    benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
   }
 }
 BENCHMARK(sum_red_bench<acc_par, std::vector, int>)

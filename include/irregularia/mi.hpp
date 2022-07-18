@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <compare>
+#include <functional>
 #include <type_traits>
 
 #include "mitraits.hpp"
@@ -85,11 +88,11 @@ private:
   typename traits::int_type value_;
 
 public:
-  template<typename IndivStorage, std::size_t AtMostIntCount>
-  requires(AtMostIntCount <= IntCount && AtMostIntCount > 0
-           && (sizeof(IndivStorage) * 8)
-               >= BitWidth) static auto encode(const std::array<IndivStorage,
-                                                                AtMostIntCount>& input)
+  /* clang-format off */
+  template<std::size_t AtMostIntCount> 
+  requires(AtMostIntCount <= IntCount && AtMostIntCount > 0)
+  static auto encode(const std::array<int, AtMostIntCount>& input)
+  /* clang-format on */
   {
     // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
@@ -192,7 +195,7 @@ public:
     return this->value_ & traits::carry_mask;
   }
 
-  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs)
+  auto operator+(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
       -> irregularia::multiple_int<BitWidth, BackingStorage>
   {
     using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
@@ -229,6 +232,45 @@ public:
       return mi_sum;
     }
   }
+
+  auto operator<=>(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
+      -> std::strong_ordering
+  {
+    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
+      return this->intv() <=> rhs.intv();
+    } else {
+      return this->value_ <=> rhs.value_;
+    }
+  }
+
+  auto operator==(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
+  {
+    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
+      return this->intv() == rhs.intv();
+    } else {
+      return this->value_ == rhs.value_;
+    }
+  }
+
+  auto operator!=(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
+  {
+    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
+      return this->intv() != rhs.intv();
+    } else {
+      return this->value_ != rhs.value_;
+    }
+  }
 };
 
 };  // namespace irregularia
+
+template<std::size_t BitWidth, typename BackingStorage>
+struct std::less<irregularia::multiple_int<BitWidth, BackingStorage>>
+{
+  constexpr auto operator()(
+      irregularia::multiple_int<BitWidth, BackingStorage> const& lhs,
+      irregularia::multiple_int<BitWidth, BackingStorage> const& rhs) const -> bool
+  {
+    return lhs < rhs;
+  }
+};

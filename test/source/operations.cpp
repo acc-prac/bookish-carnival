@@ -42,7 +42,7 @@ TEST(Addition, OverflowingOneIntSevenBit)
 
   if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
     EXPECT_EQ(0, s.intv());
-    EXPECT_EQ(1 << 1, s.carry());
+    EXPECT_EQ(0x80, s.carry());
   }
 
   else
@@ -73,4 +73,32 @@ TEST(Addition, PartiallyOverflowing4Ints7Bit)
     EXPECT_EQ(0x7F'7F'00'00, s.intv());
     EXPECT_EQ(0x00'00'00'00, s.carry());
   }
+}
+
+TEST(Max, TwoWay)
+{
+  using std::max;
+
+  auto l = irregularia::multiple_int<7, std::uint32_t>::encode<int, 4>(
+      {0xE0, 0xE0, 0x0E, 0x0E});
+  auto r = irregularia::multiple_int<7, std::uint32_t>::encode<int, 4>(
+      {0xEF, 0xEF, 0xEF, 0xEF});
+
+  auto s = l + r;
+
+  // Operators derived from spaceship
+
+  EXPECT_TRUE(l < r) << std::hex << l.intv() << " < " << std::hex << r.intv()
+                     << " failed\n";
+  EXPECT_TRUE(s < r) << std::hex << s.intv() << " < " << std::hex << r.intv()
+                     << " failed\n";
+  EXPECT_TRUE(s < l) << std::hex << s.intv() << " < " << std::hex << l.intv()
+                     << " failed\n";
+
+  auto max_lr = max(l, r);
+  auto max_sr = max(s, r);
+  auto max_sl = max(s, l);
+  EXPECT_EQ(r, max_lr);
+  EXPECT_EQ(r, max_sr);
+  EXPECT_EQ(l, max_sl);
 }
