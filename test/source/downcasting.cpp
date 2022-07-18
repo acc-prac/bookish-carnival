@@ -2,17 +2,19 @@
 #include <gtest/gtest.h>
 #include <irregularia/mi.hpp>
 
+#include <bitset>
+#include <iostream>
 
 
 //DownCast
 TEST(DownCasting, NoCarryBits)
 {
   {
-    auto l = irregularia::multiple_int<7, std::uint16_t>::encode<int, 2>({0b1111101, 0b0000111});
+    auto l = irregularia::multiple_int<7, std::uint16_t>::encode<int, 2>({0b01111101, 0b0000111});
 
     auto t = static_cast<irregularia::multiple_int<3, std::uint8_t>>(l);  
 
-    EXPECT_EQ(0b0101'0111, t.intv());
+    EXPECT_EQ(0b0101'0111, t.intv()) << "Got " << std::bitset<8>(t.intv()) << "\n";
     EXPECT_EQ(0, t.carry());
   }
 
