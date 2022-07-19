@@ -6,7 +6,7 @@
 
 
 #include <thrust/device_vector.h>
-#include <thrust/system/cuda/execution_policy.h>
+#include <thrust/execution_policy.h>
 
 static constexpr auto host_par_unseq = std::execution::par_unseq;
 static constexpr auto device_par_unseq = thrust::cuda::par;
