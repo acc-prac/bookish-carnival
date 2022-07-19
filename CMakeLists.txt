@@ -11,17 +11,6 @@ project(
     LANGUAGES CXX
 )
 
-# Enabled by default
-option(IRREGULARIA_BIT_CARRY_POLICY "Turn on if you want to propogate carry bits in your operations" ON)
-
-if(IRREGULARIA_BIT_CARRY_POLICY)
-    add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=1)
-    message(STATUS "Bits will be carried appropriately")
-else()
-  add_definitions(-DIRREGULARIA_BIT_CARRY_POLICY=0)
-  message(STATUS "Carry bits will be appropriately masked")
-endif(IRREGULARIA_BIT_CARRY_POLICY)
-
 
 #find_package(CUDA REQUIRED)
 #enable_language(CUDA)
@@ -36,7 +25,12 @@ endif(IRREGULARIA_BIT_CARRY_POLICY)
 #message(STATUS "Compiling for CUDA arch: ${CUDA_ARCH_LIST}")
 
 #set(CMAKE_CXX_COMPILER nvc++)
-set(ACCBENCH_NVCXX_FLAGS -stdpar=gpu -gpu=cc61,cuda11.7)
+
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "NVHPC")
+  set(ACCBENCH_NVCXX_FLAGS -stdpar=gpu -gpu=cc61,cuda11.7)
+else()
+  set(ACCBENCH_NVCXX_FLAGS "")
+endif()
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
