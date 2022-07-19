@@ -40,16 +40,8 @@ TEST(Addition, OverflowingOneIntSevenBit)
 
   auto s = l + r;
 
-  if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
-    EXPECT_EQ(0, s.intv());
-    EXPECT_EQ(0x80, s.carry());
-  }
-
-  else
-  {
-    EXPECT_EQ(0, s.intv());
-    EXPECT_EQ(0, s.carry());
-  }
+  EXPECT_EQ(0, s.intv());
+  EXPECT_EQ(0x80, s.carry());
 }
 
 TEST(Addition, PartiallyOverflowing4Ints7Bit)
@@ -58,31 +50,23 @@ TEST(Addition, PartiallyOverflowing4Ints7Bit)
   auto l = std::numeric_limits<irregularia::multiple_int<7, std::uint32_t>>::max();
 
   // Will overflow on the lower two ints, but keep the upper two
-  auto r = irregularia::multiple_int<7, std::uint32_t>::encode<4>(
-      {0x00, 0x00, 0x01, 0x01});
+  auto r =
+      irregularia::multiple_int<7, std::uint32_t>::encode<4>({0x00, 0x00, 0x01, 0x01});
 
   auto s = l + r;
 
-  if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
-    EXPECT_EQ(0x7F'7F'00'00, s.intv());
-    EXPECT_EQ(0x00'00'80'80, s.carry());
-  }
-
-  else
-  {
-    EXPECT_EQ(0x7F'7F'00'00, s.intv());
-    EXPECT_EQ(0x00'00'00'00, s.carry());
-  }
+  EXPECT_EQ(0x7F'7F'00'00, s.intv());
+  EXPECT_EQ(0x00'00'80'80, s.carry());
 }
 
 TEST(Max, TwoWay)
 {
   using std::max;
 
-  auto l = irregularia::multiple_int<7, std::uint32_t>::encode<4>(
-      {0xE0, 0xE0, 0x0E, 0x0E});
-  auto r = irregularia::multiple_int<7, std::uint32_t>::encode<4>(
-      {0xEF, 0xEF, 0xEF, 0xEF});
+  auto l =
+      irregularia::multiple_int<7, std::uint32_t>::encode<4>({0xE0, 0xE0, 0x0E, 0x0E});
+  auto r =
+      irregularia::multiple_int<7, std::uint32_t>::encode<4>({0xEF, 0xEF, 0xEF, 0xEF});
 
   auto s = l + r;
 
