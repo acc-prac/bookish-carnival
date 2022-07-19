@@ -2,8 +2,11 @@
 
 #include <benchmark/benchmark.h>
 #include <irregularia/accbench_targets.hpp>
+#include <irregularia/mi.hpp>
+#include <thrust/system/cuda/execution_policy.h>
 
-static constexpr auto acc_par = std::execution::par_unseq;
+static constexpr auto host_par_unseq = std::execution::par_unseq;
+static constexpr auto device_par_unseq = thrust::cuda::par;
 
 template<auto exec, template<typename value_type> class Container, typename T>
 static void xpy_bench(benchmark::State& state)
@@ -17,8 +20,8 @@ static void xpy_bench(benchmark::State& state)
   }
 }
 // needs to be first defined benchmark!
-BENCHMARK(xpy_bench<acc_par, std::vector, int>)->Name("_warmup_")->Arg(1 << 28);
-BENCHMARK(xpy_bench<acc_par, std::vector, int>)
+BENCHMARK(xpy_bench<host_par_unseq, std::vector, int>)->Name("_warmup_")->Arg(1 << 28);
+BENCHMARK(xpy_bench<device_par_unseq, thrustr::device_vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
@@ -33,7 +36,7 @@ static void elemwise_max_bench(benchmark::State& state)
     acc::elemwise_max(exec, x.cbegin(), x.cend(), y.cbegin(), y.begin());
   }
 }
-BENCHMARK(elemwise_max_bench<acc_par, std::vector, int>)
+BENCHMARK(elemwise_max_bench<host_par_unseq, std::vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
@@ -49,7 +52,7 @@ static void sum_red_bench(benchmark::State& state)
     benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
   }
 }
-BENCHMARK(sum_red_bench<acc_par, std::vector, int>)
+BENCHMARK(sum_red_bench<host_par_unseq, std::vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
@@ -63,7 +66,7 @@ static void max_red_bench(benchmark::State& state)
     benchmark::DoNotOptimize(acc::max_red(exec, vals.cbegin(), vals.cend()));
   }
 }
-BENCHMARK(sum_red_bench<acc_par, std::vector, int>)
+BENCHMARK(sum_red_bench<host_par_unseq, std::vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
