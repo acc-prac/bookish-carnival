@@ -21,7 +21,7 @@ static void xpy_bench(benchmark::State& state)
 }
 // needs to be first defined benchmark!
 BENCHMARK(xpy_bench<host_par_unseq, std::vector, int>)->Name("_warmup_")->Arg(1 << 28);
-BENCHMARK(xpy_bench<device_par_unseq, thrustr::device_vector, int>)
+BENCHMARK(xpy_bench<device_par_unseq, thrust::device_vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
