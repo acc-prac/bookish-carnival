@@ -6,6 +6,7 @@
 
 
 #include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
 #include <thrust/execution_policy.h>
 
 static constexpr auto host_par_unseq = std::execution::par_unseq;
@@ -23,7 +24,7 @@ static void xpy_bench(benchmark::State& state)
   }
 }
 // needs to be first defined benchmark!
-BENCHMARK(xpy_bench<host_par_unseq, std::vector, int>)->Name("_warmup_")->Arg(1 << 28);
+BENCHMARK(xpy_bench<host_par_unseq, thrust::host_vector, int>)->Name("_warmup_")->Arg(1 << 28);
 BENCHMARK(xpy_bench<device_par_unseq, thrust::device_vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
@@ -39,7 +40,7 @@ static void elemwise_max_bench(benchmark::State& state)
     acc::elemwise_max(exec, x.cbegin(), x.cend(), y.cbegin(), y.begin());
   }
 }
-BENCHMARK(elemwise_max_bench<host_par_unseq, std::vector, int>)
+BENCHMARK(elemwise_max_bench<host_par_unseq, thrust::host_vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
@@ -55,7 +56,7 @@ static void sum_red_bench(benchmark::State& state)
     benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
   }
 }
-BENCHMARK(sum_red_bench<host_par_unseq, std::vector, int>)
+BENCHMARK(sum_red_bench<host_par_unseq, thrust::host_vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
@@ -69,7 +70,7 @@ static void max_red_bench(benchmark::State& state)
     benchmark::DoNotOptimize(acc::max_red(exec, vals.cbegin(), vals.cend()));
   }
 }
-BENCHMARK(sum_red_bench<host_par_unseq, std::vector, int>)
+BENCHMARK(sum_red_bench<host_par_unseq, thrust::host_vector, int>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
