@@ -9,7 +9,7 @@
 #include <thrust/host_vector.h>
 #include <thrust/execution_policy.h>
 
-static constexpr auto host_par_unseq = std::execution::par_unseq;
+static constexpr auto host_par_unseq = thrust::host;
 static constexpr auto device_par_unseq = thrust::cuda::par;
 
 template<auto exec, template<typename value_type> class Container, typename T>
