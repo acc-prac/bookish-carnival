@@ -115,41 +115,36 @@ public:
     return multiple_int<BitWidth, BackingStorage> {value_};
   }
 
-  auto decode() const -> std::array<int, IntCount> {
-
-    //Create a mask with #bit-width bits set to one
+  auto decode() const -> std::array<int, IntCount>
+  {
+    // Create a mask with #bit-width bits set to one
     static auto mask = (static_cast<unsigned int>(1) << BitWidth) - 1;
 
     std::array<int, IntCount> data;
-    
-    //Avoid compiler warnings
-    if constexpr (IntCount > 1) {
 
+    // Avoid compiler warnings
+    if constexpr (IntCount > 1) {
       for (std::size_t i = 0; i < IntCount; ++i) {
-      
-        //During encoding numbers are inserted in reverse order,
-        //decode them in reverse order to correct that
-      
-        //Extracts one number from the internal storage
+        // During encoding numbers are inserted in reverse order,
+        // decode them in reverse order to correct that
+
+        // Extracts one number from the internal storage
         auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
-        //Create a mask depending on the MSB of the extracted number
+        // Create a mask depending on the MSB of the extracted number
         auto neg_mask = ((~((val >> (BitWidth - 1)) - 1)) << BitWidth);
-    
+
         data[IntCount - i - 1] = (neg_mask | val);
-  
-        //auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
-  
-        //During encoding numbers are inserted in reverse order,
-        //decode them in reverse order to correct that
-        //if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
-        //else { data[IntCount - i - 1] = val; }
-  
+
+        // auto val = ((value_ >> (i * (BitWidth + 1))) & mask);
+
+        // During encoding numbers are inserted in reverse order,
+        // decode them in reverse order to correct that
+        // if ((val >> (BitWidth - 1)) != 0) { data[IntCount - i - 1] = (~(mask) | val); }
+        // else { data[IntCount - i - 1] = val; }
       }
-      
     }
 
     return data;
-
   }
 
   /* clang-format off */
@@ -215,69 +210,29 @@ public:
       -> irregularia::multiple_int<BitWidth, BackingStorage>
   {
     using value_type = irregularia::multiple_int<BitWidth, BackingStorage>;
-
-    // 1 for handle, 0 for zero out unconditionally
-    // Will cause compilation error if not defined
-    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 0) {
-      // No need to use intv, as the carry bits are never on, therefore they can
-      // never bleed into the LSB of the following integer
-      auto sum = static_cast<typename traits::int_type>(this->value_ + rhs.value_);
-      auto mi_sum = value_type {sum};
-      mi_sum.value_ &= traits::int_mask;
-
-      return mi_sum;
-    } else {
-      // Use intv instead of the raw value to avoid adding carry bits, which
-      // would "bleed" their overflow into the LSB of the following integer
-      auto sum = static_cast<typename traits::int_type>(this->intv() + rhs.intv());
-      auto mi_sum = value_type {sum};
-      // If carry bit was set on neither lhs nor rhs, and no carry bits are set
-      // in their sum,  no carry bits are set
-
-      // If carry bit was set on neither lhs nor rhs, and carry bits are set in
-      // their sum, retain them
-
-      // If carry bit was set on lhs and / or rhs, and no carry bit is set in
-      // their sum, retain it
-
-      // If carry bit was set on lhs and / or rhs, and carry bits are
-      // set in their sum, retain them
-
-      // => if carry bits are set anywhere, they must be propagated
-      mi_sum.value_ |= (this->value_ | rhs.value_) & traits::carry_mask;
-      return mi_sum;
-    }
+    // Use intv instead of the raw value to avoid adding carry bits, which
+    // would "bleed" their overflow into the LSB of the following integer
+    auto sum = static_cast<typename traits::int_type>(this->intv() + rhs.intv());
+    auto mi_sum = value_type {sum};
+    return mi_sum;
   }
 
   auto operator<=>(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const
       -> std::strong_ordering
   {
-    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
-      return this->intv() <=> rhs.intv();
-    } else {
-      return this->value_ <=> rhs.value_;
-    }
+    return this->intv() <=> rhs.intv();
   }
 
   auto operator==(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
   {
-    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
-      return this->intv() == rhs.intv();
-    } else {
-      return this->value_ == rhs.value_;
-    }
+    return this->intv() == rhs.intv();
   }
 
   auto operator!=(irregularia::multiple_int<BitWidth, BackingStorage> rhs) const -> bool
   {
-    if constexpr (IRREGULARIA_BIT_CARRY_POLICY == 1) {
-      return this->intv() != rhs.intv();
-    } else {
-      return this->value_ != rhs.value_;
-    }
+    return this->intv() != rhs.intv();
   }
 };
-
 };  // namespace irregularia
 
 template<std::size_t BitWidth, typename BackingStorage>
