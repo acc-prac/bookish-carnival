@@ -3,6 +3,9 @@
 #include <benchmark/benchmark.h>
 #include <irregularia/accbench_targets.hpp>
 #include <irregularia/mi.hpp>
+
+
+#include <thrust/device_vector.h>
 #include <thrust/system/cuda/execution_policy.h>
 
 static constexpr auto host_par_unseq = std::execution::par_unseq;
