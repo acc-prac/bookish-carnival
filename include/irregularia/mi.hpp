@@ -34,10 +34,7 @@ private:
 
 public:
   // Default ctor = all zeros
-  multiple_int()
-      : value_ {static_cast<BackingStorage>(0)}
-  {
-  }
+  multiple_int() = default;
 
   /* clang-format off */
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
