@@ -44,3 +44,5 @@ BENCHMARK(
     max_red_int_bench<host_par_unseq, thrust::host_vector, std::uint32_t, std::uint64_t>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
+
+BENCHMARK_MAIN();
