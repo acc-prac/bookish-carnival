@@ -2,7 +2,7 @@
 outdir="bench-reports"
 mkdir -p "${outdir}"
 
-for benchmark in "xpy" "other"
+for benchmark in "xpy"
 do
     build/prod/benchmark/irregularia_benchmark \
         --benchmark_filter="${benchmark}" --benchmark_out="${outdir}"/"${benchmark}".csv \
