@@ -17,7 +17,7 @@ foreach(BENCH_FILE ${BENCH_FILES})
     get_filename_component(BENCH_NAME ${BENCH_FILE} NAME_WLE)
     add_executable(irregularia_${BENCH_NAME} ${BENCH_FILE})
 
-    target_link_libraries(${BENCH_NAME} PRIVATE 
+    target_link_libraries(irregularia_${BENCH_NAME} PRIVATE 
         irregularialib 
         benchmark::benchmark
     )
