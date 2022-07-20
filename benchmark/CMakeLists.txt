@@ -8,10 +8,21 @@ find_package(benchmark REQUIRED HINTS "/usr/local/lib/cmake")
 
 # ---- Benchmarks ----
 
-add_executable(irregularia_benchmark source/irregularia_benchmark.cpp)
-target_link_libraries(irregularia_benchmark PRIVATE 
-    irregularialib benchmark::benchmark)
-target_include_directories(irregularia_benchmark PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
-target_compile_features(irregularia_benchmark PRIVATE cxx_std_20)
-target_compile_options(irregularia_benchmark PRIVATE ${ACCBENCH_NVCXX_FLAGS})
-target_link_options(irregularia_benchmark PRIVATE ${ACCBENCH_NVCXX_FLAGS})
+set(BENCH_FILES 
+    source/max.cpp 
+    source/xpy.cpp
+)
+
+foreach(BENCH_FILE ${BENCH_FILES})
+    get_filename_component(BENCH_NAME ${BENCH_FILE} NAME)
+    add_executable(irregularia_${BENCH_NAME} ${BENCH_FILE})
+
+    target_link_libraries(irregularia_${BENCH_NAME} PRIVATE 
+        irregularialib 
+        benchmark::benchmark
+    )
+    target_include_directories(irregularia_${BENCH_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>)
+    target_compile_features(irregularia_${BENCH_NAME} PRIVATE cxx_std_20)
+    target_compile_options(irregularia_${BENCH_NAME} PRIVATE ${ACCBENCH_NVCXX_FLAGS})
+    target_link_options(irregularia_${BENCH_NAME} PRIVATE ${ACCBENCH_NVCXX_FLAGS})
+endforeach()
