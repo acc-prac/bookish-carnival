@@ -44,7 +44,7 @@ static void elemwise_max_multi_int_bench(benchmark::State& state)
   Container<T> y(n_elements, T::encode<T::IntCount>(ys));
 
   for (auto _ : state) {
-    acc::xpy(exec, x.cbegin(), x.cend(), y.cbegin(), y.begin());
+    acc::elemwise_max(exec, x.cbegin(), x.cend(), y.cbegin(), y.begin());
   }
 }
 
@@ -57,59 +57,28 @@ BENCHMARK(elemwise_max_int_bench<host_par_unseq,
                                  thrust::host_vector,
                                  std::uint32_t,
                                  std::uint64_t>)
-    ->Name("max-host-u32x2")
+    ->Name("maxelem-host-u32x2")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 BENCHMARK(elemwise_max_int_bench<device_par_unseq,
                                  thrust::device_vector,
                                  std::uint32_t,
                                  std::uint64_t>)
-    ->Name("max-device-u32x2")
+    ->Name("maxelem-device-u32x2")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
 BENCHMARK(elemwise_max_multi_int_bench<host_par_unseq,
                                        thrust::host_vector,
                                        irregularia::multiple_int<31, std::uint64_t>>)
-    ->Name("max-host-mi<31, u64>")
+    ->Name("maxelem-host-mi<31, u64>")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 BENCHMARK(elemwise_max_multi_int_bench<device_par_unseq,
                                        thrust::device_vector,
                                        irregularia::multiple_int<31, std::uint64_t>>)
-    ->Name("max-device-mi<31, u64>")
+    ->Name("maxelem-device-mi<31, u64>")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
 BENCHMARK_MAIN();
-
-/*
-template<auto exec, template<typename value_type> class Container, typename T>
-static void sum_red_bench(benchmark::State& state)
-{
-  auto const n_elements = state.range(0);
-  Container<T> const vals(n_elements, T {1});
-
-  auto const init = T {};
-
-  for (auto _ : state) {
-    benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
-  }
-}
-BENCHMARK(sum_red_bench<host_par_unseq, thrust::host_vector, int>)
-    ->RangeMultiplier(1 << 2)
-    ->Range(1 << 14, 1 << 28);
-
-template<auto exec, template<typename value_type> class Container, typename T>
-static void max_red_bench(benchmark::State& state)
-{
-  auto const n_elements = state.range(0);
-  Container<T> const vals(n_elements, T {1});
-
-  for (auto _ : state) {
-    benchmark::DoNotOptimize(acc::max_red(exec, vals.cbegin(), vals.cend()));
-  }
-}
-BENCHMARK(sum_red_bench<host_par_unseq, thrust::host_vector, int>)
-    ->RangeMultiplier(1 << 2)
-    ->Range(1 << 14, 1 << 28); */
