@@ -1,4 +1,3 @@
-
 #include <vector>
 
 #include <benchmark/benchmark.h>
@@ -9,6 +8,9 @@
 #include <thrust/host_vector.h>
 
 #include "util.hpp"
+
+static constexpr auto host_par_unseq = thrust::host;
+static constexpr auto device_par_unseq = thrust::cuda::par;
 
 template<auto exec,
          template<typename value_type>
