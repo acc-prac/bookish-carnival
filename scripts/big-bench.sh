@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -o xtrace
+
 repdir="benchmark/reports"
 vizdir="benchmark/vizes"
 
