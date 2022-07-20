@@ -33,9 +33,11 @@ template<auto exec, template<typename value_type> class Container, class T>
 static void sum_red_multi_int_bench(benchmark::State& state)
 {
   auto xs = array_repeat<T::IntCount, int>(1);
+  auto is = array_repeat<T::IntCount, int>(0);
 
   auto const n_elements = state.range(0);
   Container<T> const vals(n_elements, T::encode<T::IntCount>(xs));
+  auto const init = T::encode<T::IntCount>(is);
 
   for (auto _ : state) {
     benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
