@@ -22,7 +22,7 @@ static void sum_red_int_bench(benchmark::State& state)
   Container<Integer> const vals(n_elements * sizeof(ComparingInteger) / sizeof(Integer),
                                 Integer(1));
 
-  auto const init = Integer{};
+  auto const init = Integer {};
 
   for (auto _ : state) {
     benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
@@ -48,30 +48,28 @@ static void sum_red_multi_int_bench(benchmark::State& state)
 BENCHMARK(sum_red_int_bench<host_par_unseq, thrust::host_vector, int, std::uint32_t>)
     ->Name("_warmup_")
     ->Arg(1 << 28);
-BENCHMARK(sum_red_int_bench<host_par_unseq,
-                                 thrust::host_vector,
-                                 std::uint32_t,
-                                 std::uint64_t>)
+BENCHMARK(
+    sum_red_int_bench<host_par_unseq, thrust::host_vector, std::uint32_t, std::uint64_t>)
     ->Name("sumred-host-u32x2")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 BENCHMARK(sum_red_int_bench<device_par_unseq,
-                                 thrust::device_vector,
-                                 std::uint32_t,
-                                 std::uint64_t>)
+                            thrust::device_vector,
+                            std::uint32_t,
+                            std::uint64_t>)
     ->Name("sumred-device-u32x2")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
 BENCHMARK(sum_red_multi_int_bench<host_par_unseq,
-                                       thrust::host_vector,
-                                       irregularia::multiple_int<31, std::uint64_t>>)
+                                  thrust::host_vector,
+                                  irregularia::multiple_int<31, std::uint64_t>>)
     ->Name("sumred-host-mi<31, u64>")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 BENCHMARK(sum_red_multi_int_bench<device_par_unseq,
-                                       thrust::device_vector,
-                                       irregularia::multiple_int<31, std::uint64_t>>)
+                                  thrust::device_vector,
+                                  irregularia::multiple_int<31, std::uint64_t>>)
     ->Name("sumred-device-mi<31, u64>")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
