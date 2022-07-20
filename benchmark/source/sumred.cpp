@@ -22,7 +22,7 @@ static void sum_red_int_bench(benchmark::State& state)
   Container<Integer> const vals(n_elements * sizeof(ComparingInteger) / sizeof(Integer),
                                 Integer(1));
 
-  auto const init = T {};
+  auto const init = Integer{};
 
   for (auto _ : state) {
     benchmark::DoNotOptimize(acc::sum_red(exec, vals.cbegin(), vals.cend(), init));
