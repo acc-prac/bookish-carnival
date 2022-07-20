@@ -40,6 +40,7 @@ static void max_red_multi_int_bench(benchmark::State& state)
     benchmark::DoNotOptimize(acc::max_red(exec, vals.cbegin(), vals.cend()));
   }
 }
-BENCHMARK(max_red_int_bench<host_par_unseq, thrust::host_vector, int>)
+BENCHMARK(
+    max_red_int_bench<host_par_unseq, thrust::host_vector, std::uint32_t, std::uint64_t>)
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
