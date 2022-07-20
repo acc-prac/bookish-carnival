@@ -1,3 +1,4 @@
+#include <vector>
 
 #include <benchmark/benchmark.h>
 #include <irregularia/accbench_targets.hpp>
@@ -7,6 +8,7 @@
 #include <thrust/host_vector.h>
 
 #include "util.hpp"
+
 
 static constexpr auto host_par_unseq = thrust::host;
 static constexpr auto device_par_unseq = thrust::cuda::par;
