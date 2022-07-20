@@ -6,7 +6,7 @@ vizdir="benchmark/vizes"
 
 mkdir -p "${repdir}" "${vizdir}"
 
-for benchmark in "xpy"
+for benchmark in "xpy-dv" "xpy-hv"
 do
     build/prod/benchmark/irregularia_benchmark \
         --benchmark_filter="${benchmark}" --benchmark_out="${repdir}"/"${benchmark}".csv \

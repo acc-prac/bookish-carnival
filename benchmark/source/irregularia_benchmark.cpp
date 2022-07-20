@@ -78,21 +78,25 @@ BENCHMARK(xpy_int_bench<host_par_unseq, thrust::host_vector, int, std::uint32_t>
     ->Arg(1 << 28);
 
 BENCHMARK(xpy_int_bench<host_par_unseq, thrust::host_vector, std::uint32_t, std::uint64_t>)
+    ->Name("xpy-host-u32x2")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 BENCHMARK(
     xpy_int_bench<device_par_unseq, thrust::device_vector, std::uint32_t, std::uint64_t>)
+    ->Name("xpy-device-u32x2")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 
 BENCHMARK(xpy_multi_int_bench<host_par_unseq,
                               thrust::host_vector,
                               irregularia::multiple_int<31, std::uint64_t>>)
+    ->Name("xpy-host-mi<31, u64>")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
 BENCHMARK(xpy_multi_int_bench<device_par_unseq,
                               thrust::device_vector,
                               irregularia::multiple_int<31, std::uint64_t>>)
+    ->Name("xpy-device-mi<31, u64>")
     ->RangeMultiplier(1 << 2)
     ->Range(1 << 14, 1 << 28);
     
