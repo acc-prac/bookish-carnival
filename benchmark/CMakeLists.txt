@@ -9,7 +9,9 @@ find_package(benchmark REQUIRED HINTS "/usr/local/lib/cmake")
 # ---- Benchmarks ----
 
 set(BENCH_FILES 
-    source/max.cpp 
+    source/maxelem.cpp 
+    source/maxred.cpp 
+    source/sumred.cpp 
     source/xpy.cpp
 )
 
