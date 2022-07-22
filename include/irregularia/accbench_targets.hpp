@@ -63,7 +63,7 @@ auto max_red(Exec&& exec, InputIterator vals_b, InputIterator vals_e)
   return thrust::reduce(std::forward<Exec>(exec),
                      vals_b,
                      vals_e,
-                     numeric_limits<T>::lowest,
+                     numeric_limits<T>::lowest(),
                      [](T const& x, T const& y) -> T { return max(x, y); });
 }
 
