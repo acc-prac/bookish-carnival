@@ -31,6 +31,11 @@ static void sum_prom_int_bench(benchmark::State& state)
   }
 }
 
-BENCHMARK(sum_prom_int_bench<host_par_unseq, thrust::host_vector, int, std::uint32_t, 32>)
+BENCHMARK(sum_prom_int_bench<host_par_unseq,
+                             thrust::host_vector,
+                             std::uint32_t,
+                             std::uint64_t,
+                             std::uint64_t,
+                             32>)
     ->Name("_warmup_")
     ->Arg(1 << 28);
