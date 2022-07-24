@@ -92,7 +92,7 @@ public:
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
   requires(2 * SmallerBitWidth + 1 == BitWidth
           && 2 * sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
-  auto operator=(multiple_int<SmallerBitWidth, SmallerBackingStorage> const& other)
+  auto operator=(multiple_int<SmallerBitWidth, SmallerBackingStorage> other)
       -> multiple_int<BitWidth, BackingStorage>
   /* clang-format on */ 
   {
