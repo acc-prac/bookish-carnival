@@ -88,6 +88,18 @@ public:
     value_ &= traits::int_mask;
   }
 
+  /* clang-format off */
+  template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
+  requires(2 * SmallerBitWidth + 1 == BitWidth
+          && 2 * sizeof(SmallerBackingStorage) == sizeof(BackingStorage))
+  auto operator=(multiple_int<SmallerBitWidth, SmallerBackingStorage> const& other)
+      -> multiple_int<BitWidth, BackingStorage>
+  /* clang-format on */ 
+  {
+    using target_type = multiple_int<BitWidth, BackingStorage>;
+    return target_type{other};
+  }
+
 private:
   typename traits::int_type value_;
 
