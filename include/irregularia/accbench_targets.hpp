@@ -5,6 +5,9 @@
 #include <iterator>
 #include <numeric>
 
+#include <thrust/transform.h>
+#include <thrust/reduce.h>
+
 namespace acc
 {
 
@@ -18,7 +21,7 @@ void xpy(Exec&& exec,
   using X = std::iterator_traits<InputIterator1>::value_type;
   using Y = std::iterator_traits<InputIterator2>::value_type;
   using Z = std::iterator_traits<OutputIterator>::value_type;
-  std::transform(std::forward<Exec>(exec),
+  thrust::transform(std::forward<Exec>(exec),
                  x_b,
                  x_e,
                  y_b,
@@ -37,7 +40,7 @@ void elemwise_max(Exec&& exec,
   using Y = std::iterator_traits<InputIterator2>::value_type;
   using Z = std::iterator_traits<OutputIterator>::value_type;
   using std::max;  // customization point
-  std::transform(std::forward<Exec>(exec),
+  thrust::transform(std::forward<Exec>(exec),
                  x_b,
                  x_e,
                  y_b,
@@ -48,7 +51,7 @@ void elemwise_max(Exec&& exec,
 template<class Exec, class InputIterator, typename T>
 auto sum_red(Exec&& exec, InputIterator vals_b, InputIterator vals_e, T init)
 {
-  return std::reduce(std::forward<Exec>(exec), vals_b, vals_e, init);
+  return thrust::reduce(std::forward<Exec>(exec), vals_b, vals_e, init);
 }
 
 template<class Exec, class InputIterator>
@@ -57,10 +60,10 @@ auto max_red(Exec&& exec, InputIterator vals_b, InputIterator vals_e)
   using T = std::iterator_traits<InputIterator>::value_type;
   using std::max;  // customization point
   using std::numeric_limits;  // customization point
-  return std::reduce(std::forward<Exec>(exec),
+  return thrust::reduce(std::forward<Exec>(exec),
                      vals_b,
                      vals_e,
-                     numeric_limits<T>::lowest,
+                     numeric_limits<T>::lowest(),
                      [](T const& x, T const& y) -> T { return max(x, y); });
 }
 

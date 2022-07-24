@@ -33,6 +33,9 @@ private:
   }
 
 public:
+  // Default ctor = all zeros
+  multiple_int() = default;
+
   /* clang-format off */
   template<std::size_t SmallerBitWidth, typename SmallerBackingStorage>
   requires(2 * SmallerBitWidth + 1 == BitWidth
